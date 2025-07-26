@@ -1,0 +1,2587 @@
+
+<!-- Mde by Ayush Developer | Instagram : user.__.ayush | GitHub : @user-synax -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Computer Theory Quiz | Ayush Developer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles for dark theme and Inter font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark slate background */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align content to the top */
+            min-height: 100vh;
+            padding: 1rem; /* Responsive padding for all screen sizes */
+            color: #e2e8f0; /* Light gray text color for body */
+        }
+
+        /* Main quiz container styling */
+        .quiz-container {
+            background-color: #2d3748; /* Slightly lighter dark background for container */
+            border-radius: 1rem; /* Rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* Darker shadow for depth */
+            width: 100%;
+            max-width: 900px; /* Max width for larger screens */
+            padding: 1.5rem; /* Adjusted padding for container */
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Chapter navigation buttons styling */
+        .chapter-nav button {
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            background-color: #4a5568; /* Darker blue-gray for inactive chapter buttons */
+            color: #e2e8f0; /* Light text */
+            padding: 0.75rem 1rem; /* Increased padding for better touch targets */
+            border-radius: 0.5rem; /* Slightly rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        }
+        .chapter-nav button:hover {
+            transform: translateY(-2px); /* Lift effect on hover */
+            background-color: #6366f1; /* Indigo-500 hover */
+        }
+        .chapter-nav button.active {
+            background-color: #3b82f6; /* Blue-600 for active chapter */
+            color: white;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4); /* Stronger shadow for active state */
+        }
+
+        /* Quiz area background and text */
+        #quiz-area {
+            background-color: #2d3748; /* Same as container for a unified look */
+            color: #e2e8f0; /* Light text */
+            padding: 1.5rem; /* Consistent padding */
+            border-radius: 0.75rem; /* Rounded corners */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
+        }
+
+        /* Chapter title and question text colors */
+        #chapter-title {
+            color: #93c5fd; /* Light blue for chapter title */
+            font-size: 1.75rem; /* Adjusted font size for better readability */
+            margin-bottom: 1rem; /* Spacing below title */
+        }
+        #question-text {
+            color: #e2e8f0; /* Light text for question */
+            font-size: 1.125rem; /* Standard large text */
+            line-height: 1.6; /* Improved line height for readability */
+            margin-bottom: 1.25rem; /* Spacing below question */
+        }
+
+        /* Option buttons styling */
+        .option-button {
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+            background-color: #4a5568; /* Darker background for options */
+            border: 2px solid #4a5568; /* Darker border */
+            color: #e2e8f0; /* Light text for options */
+            padding: 0.85rem 1.25rem; /* Generous padding for touch targets */
+            border-radius: 0.75rem; /* More rounded corners */
+            text-align: left; /* Align text to left */
+            font-weight: 500; /* Medium font weight */
+        }
+        .option-button:not(.correct):not(.incorrect):hover {
+            background-color: #6366f1; /* Indigo-500 hover */
+            border-color: #818cf8; /* Indigo-400 border on hover */
+        }
+        .option-button.correct {
+            background-color: #10b981; /* Green-500 */
+            border-color: #059669; /* Green-600 */
+            color: white; /* White text for correct */
+            font-weight: 600; /* Bold text */
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3); /* Green shadow */
+        }
+        .option-button.incorrect {
+            background-color: #ef4444; /* Red-500 */
+            border-color: #dc2626; /* Red-600 */
+            color: white; /* White text for incorrect */
+            font-weight: 600; /* Bold text */
+            box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3); /* Red shadow */
+        }
+        .option-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7; /* Slightly more opaque disabled state */
+        }
+
+        /* Feedback and score display */
+        #feedback-area {
+            color: #e2e8f0; /* Default feedback text color */
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        #feedback-area.text-green-700 {
+            color: #34d399; /* Green-400 for correct feedback */
+        }
+        #feedback-area.text-red-700 {
+            color: #f87171; /* Red-400 for incorrect feedback */
+        }
+        #score-area {
+            color: #60a5fa; /* Blue-400 for score */
+            font-size: 1.5rem; /* Larger score text */
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Navigation buttons (Previous/Next) */
+        .nav-buttons button {
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            background-color: #3b82f6; /* Blue-500 */
+            color: white;
+            padding: 0.75rem 1.5rem; /* Generous padding */
+            font-weight: 600; /* Semi-bold */
+            border-radius: 0.75rem; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3); /* Blue shadow */
+            flex-grow: 1; /* Allow buttons to grow and fill space */
+        }
+        .nav-buttons button:hover:not(:disabled) {
+            transform: translateY(-2px); /* Lift effect on hover */
+            background-color: #2563eb; /* Blue-700 hover */
+        }
+        .nav-buttons button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none; /* No shadow when disabled */
+        }
+
+        /* Reset chapter button */
+        #reset-chapter-btn {
+            background-color: #dc2626; /* Red-600 */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 8px rgba(220, 38, 38, 0.3); /* Red shadow */
+            margin-top: 1rem; /* Spacing above */
+        }
+        #reset-chapter-btn:hover {
+            background-color: #b91c1c; /* Red-700 hover */
+            transform: translateY(-2px); /* Lift effect on hover */
+        }
+
+        /* Author information */
+        .author-info {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.85rem; /* Slightly smaller font */
+            color: #94a3b8; /* Gray-400 */
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 640px) {
+            .quiz-container {
+                padding: 1rem; /* Reduce padding on very small screens */
+            }
+            .chapter-nav {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on small screens */
+            }
+            #chapter-title {
+                font-size: 1.5rem; /* Smaller title on mobile */
+            }
+            #question-text {
+                font-size: 1rem; /* Smaller question text on mobile */
+            }
+            .option-button {
+                padding: 0.75rem 1rem; /* Smaller padding for options on mobile */
+            }
+            .nav-buttons {
+                flex-direction: column; /* Stack navigation buttons vertically on mobile */
+                gap: 0.75rem; /* Smaller gap */
+            }
+            .nav-buttons button {
+                width: 100%; /* Full width for stacked buttons */
+            }
+        }
+
+        /* Explanation display */
+        #explanation-display {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #3a4457; /* Slightly lighter than quiz area for contrast */
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #cbd5e0; /* Light gray for explanation text */
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Loading spinner (kept for potential future use or if explanation is added back) */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #3b82f6; /* Blue-500 */
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 flex items-center justify-center min-h-screen p-4">
+    <div class="quiz-container">
+        <h1 class="text-4xl font-extrabold text-center text-gray-100 mb-6">Computer Theory MCQs</h1>
+
+        <!-- Chapter Navigation -->
+        <div class="chapter-nav grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
+            <!-- Chapter buttons will be rendered here by JS -->
+        </div>
+
+        <!-- Quiz Area -->
+        <div id="quiz-area" class="p-6 rounded-lg shadow-inner">
+            <h2 id="chapter-title" class="text-2xl font-bold mb-4 text-center"></h2>
+            <div id="question-display" class="mb-6">
+                <p id="question-text" class="text-lg font-medium mb-4"></p>
+                <div id="options-container" class="grid grid-cols-1 gap-3">
+                    <!-- Options will be rendered here by JS -->
+                </div>
+            </div>
+
+            <!-- Feedback and Score -->
+            <div id="feedback-area" class="text-center text-lg font-semibold mt-4 mb-4"></div>
+            <div id="score-area" class="text-center text-xl font-bold"></div>
+
+            <!-- Explanation Display -->
+            <div id="explanation-loading" class="text-center mt-2 text-blue-400 hidden">
+                <span class="spinner"></span> Generating explanation...
+            </div>
+            <div id="explanation-display" class="hidden"></div>
+
+            <!-- Navigation Buttons -->
+            <div class="nav-buttons flex justify-between mt-6 gap-4">
+                <button id="prev-btn" class="px-6 py-3 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
+                    Previous Question
+                </button>
+                <button id="next-btn" class="px-6 py-3 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
+                    Next Question
+                </button>
+            </div>
+            <button id="reset-chapter-btn" class="w-full mt-4 px-6 py-3 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75">
+                Reset Chapter
+            </button>
+        </div>
+
+        <div class="author-info">
+            [ Made By 'AYUSH' | Using Kali Linux | VsCode ]
+        </div>
+    </div>
+
+    <script>
+        // Quiz Data - Manually parsed from the provided text
+        const quizData = [
+            {
+                chapter: "CHAPTER 1: Introduction to Computer",
+                questions: [
+                    {
+                        question: "What is the primary function of a computer as defined in the text?",
+                        options: [
+                            "A) To generate raw data",
+                            "B) To process raw data into information",
+                            "C) To only store information",
+                            "D) To control other machines without processing"
+                        ],
+                        correctAnswer: "B) To process raw data into information",
+                        explanation: "The primary function of a computer is to take raw data, process it according to instructions, and convert it into meaningful information. This is the core of the 'Input-Process-Output' cycle."
+                    },
+                    {
+                        question: "Which of the following is NOT listed as a characteristic of a computer?",
+                        options: [
+                            "A) Speed",
+                            "B) Emotion",
+                            "C) Accuracy",
+                            "D) Versatility"
+                        ],
+                        correctAnswer: "B) Emotion",
+                        explanation: "Computers are known for their speed, accuracy, diligence, versatility, and large storage capacity. They do not possess emotions or intelligence on their own."
+                    },
+                    {
+                        question: "The \"I-P-O Cycle\" in the working principle of a computer stands for:",
+                        options: [
+                            "A) Information-Process-Output",
+                            "B) Input-Program-Output",
+                            "C) Input-Process-Output",
+                            "D) Internal-Processing-Operation"
+                        ],
+                        correctAnswer: "C) Input-Process-Output",
+                        explanation: "The I-P-O cycle describes the fundamental working principle of a computer: it takes Input (raw data), Process it (performs operations), and produces Output (meaningful information)."
+                    },
+                    {
+                        question: "What does the \"ALU\" component of a computer primarily perform?",
+                        options: [
+                            "A) Control and coordination",
+                            "B) Storage of data",
+                            "C) Arithmetic and logical functions",
+                            "D) Input/Output operations"
+                        ],
+                        correctAnswer: "C) Arithmetic and logical functions",
+                        explanation: "ALU stands for Arithmetic Logic Unit. It is responsible for performing all arithmetic operations (like addition, subtraction) and logical operations (like comparisons)."
+                    },
+                    {
+                        question: "Which of the following is an example of an input device?",
+                        options: [
+                            "A) Monitor",
+                            "B) Printer",
+                            "C) Keyboard",
+                            "D) Speaker"
+                        ],
+                        correctAnswer: "C) Keyboard",
+                        explanation: "A keyboard is an input device used to enter data and commands into a computer. Monitors, printers, and speakers are output devices."
+                    },
+                    {
+                        question: "Which of the following is an example of an output device?",
+                        options: [
+                            "A) Mouse",
+                            "B) Scanner",
+                            "C) Microphone",
+                            "D) Monitor"
+                        ],
+                        correctAnswer: "D) Monitor",
+                        explanation: "A monitor is an output device that displays visual information from the computer. Mouse, scanner, and microphone are input devices."
+                    },
+                    {
+                        question: "What is the main characteristic of \"Primary Memory\" (RAM)?",
+                        options: [
+                            "A) It stores data permanently.",
+                            "B) It is non-volatile.",
+                            "C) It temporarily stores data and loses it when power is off.",
+                            "D) It is also known as Auxiliary memory."
+                        ],
+                        correctAnswer: "C) It temporarily stores data and loses it when power is off.",
+                        explanation: "Primary memory, specifically RAM (Random Access Memory), is volatile, meaning it requires power to maintain the stored information. It is used for temporary storage of data and programs currently in use."
+                    },
+                    {
+                        question: "\"ROM\" stands for:",
+                        options: [
+                            "A) Random Only Memory",
+                            "B) Read Only Memory",
+                            "C) Readable Output Memory",
+                            "D) Rapid Operating Memory"
+                        ],
+                        correctAnswer: "B) Read Only Memory",
+                        explanation: "ROM stands for Read Only Memory. It is a type of non-volatile memory used in computers and other electronic devices. Data stored in ROM can only be read, not modified (or modified with difficulty)."
+                    },
+                    {
+                        question: "Who is known as the \"Father of Computers\"?",
+                        options: [
+                            "A) Blaise Pascal",
+                            "B) Herman Hollerith",
+                            "C) Charles Babbage",
+                            "D) Howard Aiken"
+                        ],
+                        correctAnswer: "C) Charles Babbage",
+                        explanation: "Charles Babbage is widely considered the 'Father of the Computer' for his conceptual design of the Analytical Engine, which laid the groundwork for modern computers."
+                    },
+                    {
+                        question: "Which technology was primarily used in the first generation of computers (1940-1956)?",
+                        options: [
+                            "A) Transistors",
+                            "B) Integrated Circuits (ICs)",
+                            "C) Vacuum tubes",
+                            "D) Microprocessors"
+                        ],
+                        correctAnswer: "C) Vacuum tubes",
+                        explanation: "The first generation of computers used vacuum tubes for circuitry and magnetic drums for memory. They were enormous and consumed a lot of electricity."
+                    },
+                    {
+                        question: "The second generation of computers (1956-1963) saw the use of which major electronic component?",
+                        options: [
+                            "A) Vacuum tubes",
+                            "B) Transistors",
+                            "C) Microprocessors",
+                            "D) Artificial Intelligence"
+                        ],
+                        correctAnswer: "B) Transistors",
+                        explanation: "Transistors replaced vacuum tubes in the second generation, making computers smaller, faster, cheaper, more energy-efficient, and more reliable."
+                    },
+                    {
+                        question: "What was the key invention that characterized the third generation of computers (1964-1971)?",
+                        options: [
+                            "A) Transistors",
+                            "B) Microprocessors",
+                            "C) Integrated Circuits (ICs)",
+                            "D) Vacuum tubes"
+                        ],
+                        correctAnswer: "C) Integrated Circuits (ICs)",
+                        explanation: "The development of the Integrated Circuit (IC) marked the third generation, further miniaturizing computers and increasing their speed and efficiency."
+                    },
+                    {
+                        question: "The fourth generation of computers (1972-2010) took advantage of the invention of the:",
+                        options: [
+                            "A) Transistor",
+                            "B) Integrated Circuit",
+                            "C) Microprocessor (CPU)",
+                            "D) Abacus"
+                        ],
+                        correctAnswer: "C) Microprocessor (CPU)",
+                        explanation: "The microprocessor brought the fourth generation of computers, leading to the development of personal computers (PCs). Thousands of integrated circuits could be built onto a single silicon chip."
+                    },
+                    {
+                        question: "What is the main focus of the fifth generation of computers (2010 to present)?",
+                        options: [
+                            "A) Faster processing speed",
+                            "B) Smaller size",
+                            "C) Artificial Intelligence (AI)",
+                            "D) Increased storage capacity"
+                        ],
+                        correctAnswer: "C) Artificial Intelligence (AI)",
+                        explanation: "The fifth generation of computers is based on Artificial Intelligence (AI) and aims to make computers think and act like humans, using technologies like parallel processing and superconductors."
+                    },
+                    {
+                        question: "Which of the following is considered \"software\"?",
+                        options: [
+                            "A) Motherboard",
+                            "B) Monitor",
+                            "C) Operating System",
+                            "D) Keyboard"
+                        ],
+                        correctAnswer: "C) Operating System",
+                        explanation: "Software refers to the set of instructions or programs that tell a computer what to do. An Operating System (OS) like Windows or Linux is a prime example of software. Motherboard, monitor, and keyboard are hardware components."
+                    },
+                    {
+                        question: "What is the distinction between \"data\" and \"information\"?",
+                        options: [
+                            "A) Data is processed, information is raw.",
+                            "B) Data has meaning, information does not.",
+                            "C) Data is raw and has no meaning on its own; information is processed data with context.",
+                            "D) There is no difference; the terms are interchangeable."
+                        ],
+                        correctAnswer: "C) Data is raw and has no meaning on its own; information is processed data with context.",
+                        explanation: "Data are raw facts and figures without inherent meaning. Information is processed, organized, and structured data that provides context and meaning."
+                    },
+                    {
+                        question: "Which of the following is NOT a type of data processing method mentioned?",
+                        options: [
+                            "A) Manual Data Processing",
+                            "B) Mechanical Data Processing",
+                            "C) Chemical Data Processing",
+                            "D) Electronic Data Processing"
+                        ],
+                        correctAnswer: "C) Chemical Data Processing",
+                        explanation: "The common data processing methods are Manual (using human effort), Mechanical (using devices like calculators), and Electronic (using computers). Chemical data processing is not a recognized method in computer science."
+                    },
+                    {
+                        question: "What does \"E-governance\" primarily involve?",
+                        options: [
+                            "A) Only using computers in government offices.",
+                            "B) Application of ICT to transform government efficiency and transparency.",
+                            "C) Networking government agencies without citizen interaction.",
+                            "D) Maintaining websites for government information."
+                        ],
+                        correctAnswer: "B) Application of ICT to transform government efficiency and transparency.",
+                        explanation: "E-governance is the application of Information and Communication Technology (ICT) to improve the efficiency, transparency, and accountability of government services and processes."
+                    },
+                    {
+                        question: "Which of the following is an example of a G2C interaction in e-Governance?",
+                        options: [
+                            "A) Government sharing data with another government agency.",
+                            "B) Government providing downloadable forms to citizens.",
+                            "C) Government interacting with businesses.",
+                            "D) Government managing employee payroll."
+                        ],
+                        correctAnswer: "B) Government providing downloadable forms to citizens.",
+                        explanation: "G2C (Government to Citizen) interactions involve the government directly providing services or information to citizens, such as downloadable forms, online bill payments, or information portals."
+                    },
+                    {
+                        question: "Multimedia is defined as a collection of multiple media sources. Which of the following is NOT listed as a component of multimedia?",
+                        options: [
+                            "A) Text",
+                            "B) Graphics",
+                            "C) Chemical compounds",
+                            "D) Animation and/or Video"
+                        ],
+                        correctAnswer: "C) Chemical compounds",
+                        explanation: "Multimedia typically refers to the combination of various media types like text, graphics, audio, video, and animation. Chemical compounds are not a component of digital multimedia."
+                    }
+                ]
+            },
+            {
+                chapter: "CHAPTER 2: Introduction to GUI Based Operating System",
+                questions: [
+                    {
+                        question: "Without an operating system, a computer is considered:",
+                        options: [
+                            "A) More efficient",
+                            "B) Useless",
+                            "C) Faster",
+                            "D) Only capable of running games"
+                        ],
+                        correctAnswer: "B) Useless",
+                        explanation: "An operating system (OS) is essential software that manages computer hardware and software resources and provides common services for computer programs. Without it, the hardware cannot function meaningfully."
+                    },
+                    {
+                        question: "Which of the following is NOT an example of an operating system mentioned in the text?",
+                        options: [
+                            "A) Windows",
+                            "B) Linux",
+                            "C) Android",
+                            "D) MS Office"
+                        ],
+                        correctAnswer: "D) MS Office",
+                        explanation: "Windows, Linux, and Android are all examples of operating systems. MS Office (Microsoft Office) is an application suite, not an operating system."
+                    },
+                    {
+                        question: "An operating system acts as an interface between:",
+                        options: [
+                            "A) User and application",
+                            "B) Software and computer hardware",
+                            "C) CPU and memory",
+                            "D) Input devices and output devices"
+                        ],
+                        correctAnswer: "B) Software and computer hardware",
+                        explanation: "The operating system acts as a crucial intermediary, allowing application software to interact with the computer's hardware resources."
+                    },
+                    {
+                        question: "Which characteristic of an Operating System is responsible for keeping track of primary memory usage?",
+                        options: [
+                            "A) Processor Management",
+                            "B) Device Management",
+                            "C) File Management",
+                            "D) Memory Management"
+                        ],
+                        correctAnswer: "D) Memory Management",
+                        explanation: "Memory Management is the OS function that manages primary memory (RAM), keeping track of which parts are in use and by whom, and allocating/deallocating memory as needed."
+                    },
+                    {
+                        question: "The characteristic of an OS that allocates the processor (CPU) to a process is called:",
+                        options: [
+                            "A) Memory Management",
+                            "B) Processor Management",
+                            "C) Device Management",
+                            "D) Security"
+                        ],
+                        correctAnswer: "B) Processor Management",
+                        explanation: "Processor Management (or CPU Scheduling) is the OS function that determines which process gets the CPU at what time and for how long, ensuring efficient use of the processor."
+                    },
+                    {
+                        question: "Which type of user interface uses commands entered from the keyboard?",
+                        options: [
+                            "A) GUI",
+                            "B) CLI",
+                            "C) Touch Interface",
+                            "D) Voice Interface"
+                        ],
+                        correctAnswer: "B) CLI",
+                        explanation: "CLI stands for Command Line Interface. It is a text-based interface where users type commands to interact with the operating system."
+                    },
+                    {
+                        question: "Which of the following is NOT an advantage of a Graphical User Interface (GUI)?",
+                        options: [
+                            "A) Easy to use for beginners",
+                            "B) Requires less memory",
+                            "C) Provides visual feedback",
+                            "D) Supports multitasking"
+                        ],
+                        correctAnswer: "B) Requires less memory",
+                        explanation: "GUIs are generally more resource-intensive and require more memory and processing power compared to CLIs due to their graphical elements."
+                    },
+                    {
+                        question: "What is the main disadvantage of a GUI mentioned in the text?",
+                        options: [
+                            "A) Slower to learn",
+                            "B) Requires more system resources",
+                            "C) Less visual feedback",
+                            "D) Limited functionality"
+                        ],
+                        correctAnswer: "B) Requires more system resources",
+                        explanation: "As mentioned, GUIs are visually rich and user-friendly but demand more system resources (CPU, RAM) to operate smoothly compared to command-line interfaces."
+                    },
+                    {
+                        question: "In a GUI, the background area of the screen where icons and windows are displayed is called the:",
+                        options: [
+                            "A) Taskbar",
+                            "B) Start Menu",
+                            "C) Desktop",
+                            "D) Control Panel"
+                        ],
+                        correctAnswer: "C) Desktop",
+                        explanation: "The desktop is the main screen area of a GUI, serving as a workspace where users can interact with applications, files, and system settings."
+                    },
+                    {
+                        question: "What is the primary function of the \"Start Button\" in Windows?",
+                        options: [
+                            "A) To open the Recycle Bin",
+                            "B) To shut down the computer directly",
+                            "C) To access programs, files, and settings",
+                            "D) To minimize all open windows"
+                        ],
+                        correctAnswer: "C) To access programs, files, and settings",
+                        explanation: "The Start button is a central access point in Windows, providing a menu to launch applications, open documents, access system settings, and perform various system tasks like shutting down."
+                    },
+                    {
+                        question: "What is the purpose of \"Icons\" on a desktop?",
+                        options: [
+                            "A) To store large files",
+                            "B) To represent programs, files, or folders",
+                            "C) To change desktop background",
+                            "D) To display system time"
+                        ],
+                        correctAnswer: "B) To represent programs, files, or folders",
+                        explanation: "Icons are small graphical representations that provide a quick and visual way to access applications, files, folders, or other system functions."
+                    },
+                    {
+                        question: "To rename a file or folder in Windows, you typically:",
+                        options: [
+                            "A) Double-click it",
+                            "B) Right-click it and select \"Rename\"",
+                            "C) Drag it to the Recycle Bin",
+                            "D) Press the Enter key"
+                        ],
+                        correctAnswer: "B) Right-click it and select \"Rename\"",
+                        explanation: "The standard method to rename a file or folder in Windows is to right-click on it to open the context menu and then select the 'Rename' option."
+                    },
+                    {
+                        question: "Where are deleted files and folders temporarily stored in Windows?",
+                        options: [
+                            "A) My Documents",
+                            "B) My Computer",
+                            "C) Recycle Bin",
+                            "D) Control Panel"
+                        ],
+                        correctAnswer: "C) Recycle Bin",
+                        explanation: "The Recycle Bin is a temporary storage area for deleted files and folders in Windows, allowing users to restore them if needed before permanent deletion."
+                    },
+                    {
+                        question: "Which of the following is a characteristic of Linux?",
+                        options: [
+                            "A) It is proprietary software.",
+                            "B) It has a flat file system.",
+                            "C) It is open source.",
+                            "D) It has only one standard version."
+                        ],
+                        correctAnswer: "C) It is open source.",
+                        explanation: "Linux is open-source software, meaning its source code is freely available and can be modified and distributed by anyone. This fosters a large community of developers."
+                    },
+                    {
+                        question: "What is the name of the central component of the Linux system that communicates directly with the hardware?",
+                        options: [
+                            "A) Shell",
+                            "B) Desktop Environment",
+                            "C) Kernel",
+                            "D) File System"
+                        ],
+                        correctAnswer: "C) Kernel",
+                        explanation: "The kernel is the core of the Linux operating system. It manages the system's resources and facilitates communication between hardware and software."
+                    },
+                    {
+                        question: "Which program implements a textual interface that allows you to run programs by entering commands from the keyboard in Linux?",
+                        options: [
+                            "A) Kernel",
+                            "B) GUI",
+                            "C) Shell",
+                            "D) Device Manager"
+                        ],
+                        correctAnswer: "C) Shell",
+                        explanation: "A shell is a command-line interpreter that provides a text-based interface for users to interact with the operating system by typing commands."
+                    },
+                    {
+                        question: "What is the top-level directory called in the Linux file system?",
+                        options: [
+                            "A) Home directory",
+                            "B) User directory",
+                            "C) Root directory",
+                            "D) System directory"
+                        ],
+                        correctAnswer: "C) Root directory",
+                        explanation: "In Linux, the root directory (/) is the highest level in the file system hierarchy, from which all other directories and files branch out."
+                    },
+                    {
+                        question: "Which of the following is a disadvantage of Linux mentioned in the text?",
+                        options: [
+                            "A) It is expensive to use.",
+                            "B) It has dedicated tech support.",
+                            "C) It has better security than Windows."
+                        ],
+                        correctAnswer: "C) Most games are not available.",
+                        explanation: "While Linux has many advantages, a common disadvantage for some users is the limited availability of commercial software and games compared to Windows or macOS."
+                    },
+                    {
+                        question: "Which of the following is a common version (distribution) of Linux?",
+                        options: [
+                            "A) Windows XP",
+                            "B) MS-DOS",
+                            "C) Ubuntu",
+                            "D) Mac OS"
+                        ],
+                        correctAnswer: "C) Ubuntu",
+                        explanation: "Ubuntu is one of the most popular and user-friendly distributions of Linux, known for its ease of use and large community support."
+                    },
+                    {
+                        question: "The purpose of an operating system is to provide an environment where a user can execute programs in a:",
+                        options: [
+                            "A) Complex and inefficient manner",
+                            "B) Convenient and efficient manner",
+                            "C) Hardware-dependent manner",
+                            "D) Limited and restricted manner"
+                        ],
+                        correctAnswer: "B) Convenient and efficient manner",
+                        explanation: "The fundamental goal of an operating system is to make the computer system convenient to use and to manage its resources efficiently for program execution."
+                    }
+                ]
+            },
+            {
+                chapter: "CHAPTER 3: Elements of Word Processing",
+                questions: [
+                    {
+                        question: "Microsoft Word 2010 is primarily used for:",
+                        options: [
+                            "A) Creating spreadsheets",
+                            "B) Designing presentations",
+                            "C) Creating professional-quality documents, letters, and reports",
+                            "D) Managing databases"
+                        ],
+                        correctAnswer: "C) Creating professional-quality documents, letters, and reports",
+                        explanation: "Microsoft Word is a word processor, designed specifically for creating, editing, formatting, and printing text-based documents."
+                    },
+                    {
+                        question: "The extension for any Microsoft Word file is:",
+                        options: [
+                            "A) .xlsx or .xls",
+                            "B) .pptx or .ppt",
+                            "C) .accdb or .mdb",
+                            "D) .doc or .docx"
+                        ],
+                        correctAnswer: "D) .doc or .docx",
+                        explanation: ".doc (for older versions) and .docx (for newer versions) are the standard file extensions for Microsoft Word documents."
+                    },
+                    {
+                        question: "Which of the following is a keyboard shortcut to open MS Word?",
+                        options: [
+                            "A) Ctrl + O",
+                            "B) Ctrl + S",
+                            "C) Window + R and type \"Winword\"",
+                            "D) Alt + F4"
+                        ],
+                        correctAnswer: "C) Window + R and type \"Winword\"",
+                        explanation: "Pressing the Windows key + R opens the Run dialog box, where typing 'winword' and pressing Enter will launch Microsoft Word."
+                    },
+                    {
+                        question: "The current versions of Microsoft Word use what is referred to as the:",
+                        options: [
+                            "A) Classic menu system",
+                            "B) Ribbon menu system",
+                            "C) Dropdown menu system",
+                            "D) Toolbar system"
+                        ],
+                        correctAnswer: "B) Ribbon menu system",
+                        explanation: "Microsoft Office applications, including Word, from version 2007 onwards, use the Ribbon interface, which organizes commands into tabs and groups."
+                    },
+                    {
+                        question: "Which tab in the Ribbon menu is the default tab in Microsoft Word and contains groups like Clipboard, Font, and Paragraph?",
+                        options: [
+                            "A) Insert",
+                            "B) Page Layout",
+                            "C) Home",
+                            "D) Review"
+                        ],
+                        correctAnswer: "C) Home",
+                        explanation: "The Home tab is the default tab in Word and contains the most frequently used commands for basic editing and formatting, such as those related to clipboard, font, and paragraph settings."
+                    },
+                    {
+                        question: "Which menu is used to place various objects into your document, such as page numbers, pictures, and symbols?",
+                        options: [
+                            "A) Home",
+                            "B) Page Layout",
+                            "C) Insert",
+                            "D) Mailings"
+                        ],
+                        correctAnswer: "C) Insert",
+                        explanation: "The Insert tab in Word is used to add various elements into your document, including tables, pictures, shapes, charts, headers, footers, page numbers, and symbols."
+                    },
+                    {
+                        question: "The \"Page Layout\" menu is primarily used for:",
+                        options: [
+                            "A) Spell checking",
+                            "B) Document formatting like margins and orientation",
+                            "C) Inserting tables",
+                            "D) Sending emails"
+                        ],
+                        correctAnswer: "B) Document formatting like margins and orientation",
+                        explanation: "The Page Layout tab (or Layout tab in newer versions) contains options for setting up the page, such as margins, orientation (portrait/landscape), size, columns, and breaks."
+                    },
+                    {
+                        question: "What is the keyboard shortcut to create a new, blank document in MS Word?",
+                        options: [
+                            "A) Ctrl + S",
+                            "B) Ctrl + O",
+                            "C) Ctrl + N",
+                            "D) Ctrl + P"
+                        ],
+                        correctAnswer: "C) Ctrl + N",
+                        explanation: "Ctrl + N is the universal keyboard shortcut in many applications, including Word, to create a new, blank document."
+                    },
+                    {
+                        question: "To save a document for the first time, you should select \"File\" and then:",
+                        options: [
+                            "A) Save",
+                            "B) Save As",
+                            "C) Open",
+                            "D) Print"
+                        ],
+                        correctAnswer: "B) Save As",
+                        explanation: "When saving a document for the first time, 'Save As' allows you to specify the file name and location. 'Save' is used for subsequent saves to the existing file."
+                    },
+                    {
+                        question: "What is the keyboard shortcut to simply save a document without renaming or relocating it?",
+                        options: [
+                            "A) Ctrl + X",
+                            "B) Ctrl + C",
+                            "C) Ctrl + V",
+                            "D) Ctrl + S"
+                        ],
+                        correctAnswer: "D) Ctrl + S",
+                        explanation: "Ctrl + S is the standard keyboard shortcut to quickly save changes to an already existing document without prompting for a new name or location."
+                    },
+                    {
+                        question: "To cut selected content in Word, the keyboard shortcut is:",
+                        options: [
+                            "A) Ctrl + C",
+                            "B) Ctrl + V",
+                            "C) Ctrl + X",
+                            "D) Ctrl + S"
+                        ],
+                        correctAnswer: "C) Ctrl + X",
+                        explanation: "Ctrl + X is the keyboard shortcut for 'Cut', which removes the selected content from its original location and places it onto the clipboard."
+                    },
+                    {
+                        question: "To paste text in Word, the keyboard shortcut is:",
+                        options: [
+                            "A) Ctrl + X",
+                            "B) Ctrl + C",
+                            "C) Ctrl + V",
+                            "D) Ctrl + P"
+                        ],
+                        correctAnswer: "C) Ctrl + V",
+                        explanation: "Ctrl + V is the keyboard shortcut for 'Paste', which inserts content from the clipboard at the current cursor position."
+                    },
+                    {
+                        question: "Options for headers and footers are located in which ribbon menu?",
+                        options: [
+                            "A) Home",
+                            "B) Page Layout",
+                            "C) Insert",
+                            "D) Review"
+                        ],
+                        correctAnswer: "C) Insert",
+                        explanation: "Headers and Footers are elements that appear at the top and bottom of each page, respectively. Options to insert and edit them are found under the 'Insert' tab."
+                    },
+                    {
+                        question: "To check your document for spelling errors, you can use the spell and grammar check feature located in the \"Review\" menu or by pressing which function key?",
+                        options: [
+                            "A) F1",
+                            "B) F5",
+                            "C) F7",
+                            "D) F12"
+                        ],
+                        correctAnswer: "C) F7",
+                        explanation: "The F7 function key is a common shortcut to activate the Spell Check and Grammar feature in Microsoft Word and many other applications."
+                    },
+                    {
+                        question: "What is the keyboard shortcut for printing a document in MS Word?",
+                        options: [
+                            "A) Ctrl + S",
+                            "B) Ctrl + O",
+                            "C) Ctrl + P",
+                            "D) Ctrl + N"
+                        ],
+                        correctAnswer: "C) Ctrl + P",
+                        explanation: "Ctrl + P is the standard keyboard shortcut to open the Print dialog box, allowing you to print the current document."
+                    },
+                    {
+                        question: "To close a document without exiting the Word program, you should select the \"Close\" button in the:",
+                        options: [
+                            "A) Home dropdown menu",
+                            "B) Insert dropdown menu",
+                            "C) File dropdown menu",
+                            "D) View dropdown menu"
+                        ],
+                        correctAnswer: "C) File dropdown menu",
+                        explanation: "Within the File menu (or File tab in newer versions), the 'Close' option allows you to close the current document while keeping the Word application open."
+                    },
+                    {
+                        question: "What is the keyboard shortcut to close the document and the Word program simultaneously?",
+                        options: [
+                            "A) Ctrl + F4",
+                            "B) Alt + F4",
+                            "C) Shift + F4",
+                            "D) Tab + F4"
+                        ],
+                        correctAnswer: "B) Alt + F4",
+                        explanation: "Alt + F4 is a universal Windows shortcut to close the currently active application window, which in this case would close both the document and the Word program."
+                    },
+                    {
+                        question: "Which of the following is NOT a primary task you will perform in Word, as listed in the text?",
+                        options: [
+                            "A) Creating new documents",
+                            "B) Formatting documents",
+                            "C) Developing operating systems",
+                            "D) Printing documents"
+                        ],
+                        correctAnswer: "C) Developing operating systems",
+                        explanation: "Microsoft Word is an application software for document creation and manipulation. Developing operating systems is a complex software engineering task, not a function of a word processor."
+                    },
+                    {
+                        question: "What is the primary purpose of the \"Mailings\" ribbon menu?",
+                        options: [
+                            "A) To insert images",
+                            "B) To create envelopes and labels for mailings",
+                            "C) To check grammar",
+                            "D) To change page orientation"
+                        ],
+                        correctAnswer: "B) To create envelopes and labels for mailings",
+                        explanation: "The Mailings tab in Word is specifically designed for tasks related to mass mailings, such as creating envelopes, labels, and performing mail merge operations."
+                    },
+                    {
+                        question: "The \"View\" menu in Word allows you to:",
+                        options: [
+                            "A) Insert tables",
+                            "B) Change how the document is viewed",
+                            "C) Apply themes",
+                            "D) Send emails"
+                        ],
+                        correctAnswer: "B) Change how the document is viewed",
+                        explanation: "The View tab provides options to change the document's display mode (e.g., Print Layout, Read Mode, Web Layout), zoom level, and show/hide rulers, gridlines, and navigation pane."
+                    }
+                ]
+            },
+            {
+                chapter: "CHAPTER 4: Spreadsheet",
+                questions: [
+                    {
+                        question: "Microsoft Excel 2010 is primarily a:",
+                        options: [
+                            "A) Word processor",
+                            "B) Presentation tool",
+                            "C) Spreadsheet program",
+                            "D) Database management system"
+                        ],
+                        correctAnswer: "C) Spreadsheet program",
+                        explanation: "Microsoft Excel is a powerful spreadsheet application used for organizing, analyzing, and manipulating numerical data in rows and columns."
+                    },
+                    {
+                        question: "In Excel, a computerized spreadsheet is called a:",
+                        options: [
+                            "A) Workbook",
+                            "B) Document",
+                            "C) Worksheet",
+                            "D) Presentation"
+                        ],
+                        correctAnswer: "C) Worksheet",
+                        explanation: "A worksheet is a single sheet within an Excel workbook, consisting of rows and columns where data is entered and calculations are performed."
+                    },
+                    {
+                        question: "The file used to store worksheets in Excel is called a:",
+                        options: [
+                            "A) Document",
+                            "B) Workbook",
+                            "C) Sheet file",
+                            "D) Data file"
+                        ],
+                        correctAnswer: "B) Workbook",
+                        explanation: "An Excel file is called a workbook, which can contain one or more individual worksheets."
+                    },
+                    {
+                        question: "How many rows are there in an Excel worksheet?",
+                        options: [
+                            "A) 16,384",
+                            "B) 65,536",
+                            "C) 1,048,576",
+                            "D) 1,000,000"
+                        ],
+                        correctAnswer: "C) 1,048,576",
+                        explanation: "Modern versions of Excel (since Excel 2007) have 1,048,576 rows per worksheet."
+                    },
+                    {
+                        question: "How many columns are there in an Excel worksheet?",
+                        options: [
+                            "A) 10,48,576",
+                            "B) 16,384",
+                            "C) 256",
+                            "D) 1024"
+                        ],
+                        correctAnswer: "B) 16,384",
+                        explanation: "Modern versions of Excel (since Excel 2007) have 16,384 columns per worksheet, labeled from A to XFD."
+                    },
+                    {
+                        question: "A combination of a letter and a number that specifies the column and row in which a cell is located is called:",
+                        options: [
+                            "A) Cell range",
+                            "B) Cell address",
+                            "C) Cell reference",
+                            "D) Cell name"
+                        ],
+                        correctAnswer: "B) Cell address",
+                        explanation: "A cell address (or cell reference) uniquely identifies a cell by its column letter and row number, e.g., A1, B5, C10."
+                    },
+                    {
+                        question: "To enter text into a cell in Excel, you first:",
+                        options: [
+                            "A) Press Enter",
+                            "B) Click on the cell and begin typing",
+                            "C) Double-click the cell",
+                            "D) Use the Formula Bar only"
+                        ],
+                        correctAnswer: "B) Click on the cell and begin typing",
+                        explanation: "The most common way to enter data into an Excel cell is to simply click on it to select it and then start typing. The text will appear in the cell and the Formula Bar."
+                    },
+                    {
+                        question: "When entering numbers in Excel, if you enter \"5.00\" and press Enter, the value shown will typically change to \"5\". This is because:",
+                        options: [
+                            "A) Excel automatically rounds numbers.",
+                            "B) Trailing zeroes are not shown by default.",
+                            "C) It's an error in data entry.",
+                            "D) The cell is formatted for text."
+                        ],
+                        correctAnswer: "B) Trailing zeroes are not shown by default.",
+                        explanation: "By default, Excel does not display trailing zeros after a decimal point if they do not add significant value. You can change cell formatting to display them."
+                    },
+                    {
+                        question: "To insert a new row in Excel, you typically insert it:",
+                        options: [
+                            "A) Below the selected row",
+                            "B) Above the selected row",
+                            "C) To the right of the selected column",
+                            "D) To the left of the selected column"
+                        ],
+                        correctAnswer: "B) Above the selected row",
+                        explanation: "When you insert a new row in Excel, it is inserted immediately above the currently selected row(s)."
+                    },
+                    {
+                        question: "If you see pound signs (#######) in a cell, it means:",
+                        options: [
+                            "A) The cell contains an error.",
+                            "B) The column is not wide enough to display the content.",
+                            "C) The formula is incorrect.",
+                            "D) The data type is wrong."
+                        ],
+                        correctAnswer: "B) The column is not wide enough to display the content.",
+                        explanation: "The '#######' error in Excel indicates that the column is not wide enough to display the entire numerical or date value in the cell. Widening the column will resolve this."
+                    },
+                    {
+                        question: "All formulas in Excel must begin with which symbol?",
+                        options: [
+                            "A) +",
+                            "B) -",
+                            "C) =",
+                            "D) *"
+                        ],
+                        correctAnswer: "C) =",
+                        explanation: "Every formula in Excel must start with an equals sign (=). This tells Excel that the content of the cell is a formula and not just text or a number."
+                    },
+                    {
+                        question: "To edit an existing formula in Excel, you can:",
+                        options: [
+                            "A) Only retype the entire formula.",
+                            "B) Click the formula bar or double-click the cell.",
+                            "C) Use the AutoSum command.",
+                            "D) Press Ctrl + ` (grave accent)."
+                        ],
+                        correctAnswer: "B) Click the formula bar or double-click the cell.",
+                        explanation: "You can edit a formula by clicking directly in the cell (which puts it in edit mode) or by selecting the cell and then clicking in the Formula Bar at the top of the Excel window."
+                    },
+                    {
+                        question: "What is a \"function\" in Excel?",
+                        options: [
+                            "A) A user-defined calculation.",
+                            "B) A predefined formula that performs calculations.",
+                            "C) A cell address.",
+                            "D) A type of chart."
+                        ],
+                        correctAnswer: "B) A predefined formula that performs calculations.",
+                        explanation: "Functions in Excel are pre-built formulas that perform specific calculations, such as SUM, AVERAGE, MAX, MIN, etc., saving users from writing complex formulas from scratch."
+                    },
+                    {
+                        question: "The \"AutoSum\" command allows you to automatically return results for common functions like SUM and AVERAGE. Where can you find this command?",
+                        options: [
+                            "A) Insert tab",
+                            "B) Page Layout tab",
+                            "C) Home tab (Editing group) or Formulas tab",
+                            "D) Data tab"
+                        ],
+                        correctAnswer: "C) Home tab (Editing group) or Formulas tab",
+                        explanation: "The AutoSum command is conveniently located in the Editing group on the Home tab and also prominently on the Formulas tab, providing quick access to common functions."
+                    },
+                    {
+                        question: "What is a \"chart\" (or graph) in Excel?",
+                        options: [
+                            "A) A numerical table of values.",
+                            "B) A textual representation of data.",
+                            "C) A visual representation of numeric values.",
+                            "D) A formula for calculations."
+                        ],
+                        correctAnswer: "C) A visual representation of numeric values.",
+                        explanation: "Charts (or graphs) in Excel are graphical representations of data, making it easier to visualize trends, patterns, and comparisons within numerical datasets."
+                    },
+                    {
+                        question: "Which type of chart is best for showing data changes over a period of time or comparisons among items?",
+                        options: [
+                            "A) Pie chart",
+                            "B) Line chart",
+                            "C) Column chart",
+                            "D) Surface chart"
+                        ],
+                        correctAnswer: "C) Column chart",
+                        explanation: "Column charts are effective for showing comparisons among individual items or changes over a period of time, with categories organized horizontally and values vertically."
+                    },
+                    {
+                        question: "A chart that shows the size of items proportional to the sum of the items, always showing only one data series, is a:",
+                        options: [
+                            "A) Bar chart",
+                            "B) Line chart",
+                            "C) Area chart",
+                            "D) Pie chart"
+                        ],
+                        correctAnswer: "D) Pie chart",
+                        explanation: "A pie chart displays the contribution of each value to a total, representing a single data series as slices of a circular 'pie'."
+                    },
+                    {
+                        question: "To insert a chart, you typically select the cells you want to chart and then go to which tab?",
+                        options: [
+                            "A) Home",
+                            "B) Formulas",
+                            "C) Insert",
+                            "D) Data"
+                        ],
+                        correctAnswer: "C) Insert",
+                        explanation: "The 'Insert' tab in Excel contains all the options for inserting various objects into your worksheet, including different types of charts."
+                    },
+                    {
+                        question: "To view the Print pane in Excel, you click on the:",
+                        options: [
+                            "A) Home tab",
+                            "B) Insert tab",
+                            "C) File tab",
+                            "D) Data tab"
+                        ],
+                        correctAnswer: "C) File tab",
+                        explanation: "The File tab (also known as the Backstage view) provides options for managing your workbook, including saving, opening, printing, and sharing."
+                    },
+                    {
+                        question: "The default file format for saving an Excel sheet is:",
+                        options: [
+                            "A) .doc",
+                            "B) .ppt",
+                            "C) .xlsx",
+                            "D) .txt"
+                        ],
+                        correctAnswer: "C) .xlsx",
+                        explanation: ".xlsx is the default file extension for Excel workbooks created in Excel 2007 and later versions. It is an XML-based format."
+                    }
+                ]
+            },
+            {
+                chapter: "CHAPTER 5: Computer Communication and Internet",
+                questions: [
+                    {
+                        question: "What is the most popular way of communication on the internet mentioned in the text?",
+                        options: [
+                            "A) Video conferencing",
+                            "B) Instant messaging",
+                            "C) Electronic mail",
+                            "D) Social networking"
+                        ],
+                        correctAnswer: "C) Electronic mail",
+                        explanation: "Electronic mail (email) is one of the oldest and most widely used forms of communication over the internet, allowing asynchronous message exchange."
+                    },
+                    {
+                        question: "LAN stands for:",
+                        options: [
+                            "A) Large Area Network",
+                            "B) Local Area Network",
+                            "C) Long Access Network",
+                            "D) Limited Access Node"
+                        ],
+                        correctAnswer: "B) Local Area Network",
+                        explanation: "LAN stands for Local Area Network, which is a computer network that interconnects computers within a limited area such as a residence, school, laboratory, or office building."
+                    },
+                    {
+                        question: "A LAN is typically contained within a:",
+                        options: [
+                            "A) Continent",
+                            "B) Country",
+                            "C) Small geographic area, usually within the same building",
+                            "D) Global network"
+                        ],
+                        correctAnswer: "C) Small geographic area, usually within the same building",
+                        explanation: "LANs are designed for relatively small geographical areas, providing high-speed connectivity within a single building or a small campus."
+                    },
+                    {
+                        question: "Which of the following is an advantage of a Local Area Network (LAN)?",
+                        options: [
+                            "A) Covers a very large geographical area.",
+                            "B) Requires a dedicated administrator for small setups.",
+                            "C) Sharing of resources like printers and hard drives.",
+                            "D) High setup cost for home use."
+                        ],
+                        correctAnswer: "C) Sharing of resources like printers and hard drives.",
+                        explanation: "A key advantage of LANs is the ability to share resources such as printers, scanners, and files among multiple connected computers, reducing costs and increasing efficiency."
+                    },
+                    {
+                        question: "What is a disadvantage of a Local Area Network (LAN)?",
+                        options: [
+                            "A) Easy and fast communication.",
+                            "B) Software program sharing is expensive.",
+                            "C) Server crashes may affect all connected computers.",
+                            "D) Data is always perfectly secure."
+                        ],
+                        correctAnswer: "C) Server crashes may affect all connected computers.",
+                        explanation: "In a client-server LAN setup, if the central server fails, it can disrupt services and access for all connected client computers, leading to downtime."
+                    },
+                    {
+                        question: "WAN stands for:",
+                        options: [
+                            "A) Wireless Area Network",
+                            "B) Wide Area Node",
+                            "C) Wide Area Network",
+                            "D) World Access Network"
+                        ],
+                        correctAnswer: "C) Wide Area Network",
+                        explanation: "WAN stands for Wide Area Network, which is a telecommunications network that extends over a large geographical area, such as a country or even the world."
+                    },
+                    {
+                        question: "The Internet is described as the world's largest:",
+                        options: [
+                            "A) LAN",
+                            "B) MAN",
+                            "C) WAN",
+                            "D) PAN"
+                        ],
+                        correctAnswer: "C) WAN",
+                        explanation: "The Internet is a global system of interconnected computer networks that uses the Internet protocol suite (TCP/IP) to link billions of devices worldwide, making it the largest WAN."
+                    },
+                    {
+                        question: "Which of the following is an advantage of a Wide Area Network (WAN)?",
+                        options: [
+                            "A) Limited geographical area coverage.",
+                            "B) Lower bandwidth than normal broadband.",
+                            "C) Centralized data storage for multiple office branches.",
+                            "D) Easier troubleshooting due to smaller scale."
+                        ],
+                        correctAnswer: "C) Centralized data storage for multiple office branches.",
+                        explanation: "WANs enable businesses with multiple branches in different locations to centralize data storage and access, facilitating collaboration and consistent data management across the organization."
+                    },
+                    {
+                        question: "What is the basic communications protocol used by the Internet?",
+                        options: [
+                            "A) HTTP",
+                            "B) FTP",
+                            "C) TCP/IP",
+                            "D) SMTP"
+                        ],
+                        correctAnswer: "C) TCP/IP",
+                        explanation: "TCP/IP (Transmission Control Protocol/Internet Protocol) is the fundamental suite of communication protocols used to interconnect network devices on the Internet. It defines how data is packaged, addressed, sent, routed, and received."
+                    },
+                    {
+                        question: "WWW stands for:",
+                        options: [
+                            "A) World Wide Web",
+                            "B) Wide World Web",
+                            "C) Web Wide World",
+                            "D) World Web Wide"
+                        ],
+                        correctAnswer: "A) World Wide Web",
+                        explanation: "WWW stands for World Wide Web, commonly known as the Web. It is a global information system that users can access via the Internet using web browsers."
+                    },
+                    {
+                        question: "What is a \"website\"?",
+                        options: [
+                            "A) A single web page.",
+                            "B) A central location of various related web pages.",
+                            "C) A search engine.",
+                            "D) A web browser."
+                        ],
+                        correctAnswer: "B) A central location of various related web pages.",
+                        explanation: "A website is a collection of related web pages, images, videos, and other digital assets that are hosted on a web server and accessible via a web browser."
+                    },
+                    {
+                        question: "Which of the following is NOT listed as a common Internet service?",
+                        options: [
+                            "A) Electronic Mail",
+                            "B) Telnet",
+                            "C) Internet Relay Chat",
+                            "D) Quantum Computing"
+                        ],
+                        correctAnswer: "D) Quantum Computing",
+                        explanation: "Electronic Mail, Telnet, and Internet Relay Chat (IRC) are traditional internet services. Quantum computing is a new field of computing that uses quantum-mechanical phenomena, not a common internet service."
+                    },
+                    {
+                        question: "What is an ISP?",
+                        options: [
+                            "A) Internet Software Program",
+                            "B) Internal System Provider",
+                            "C) Internet Service Provider",
+                            "D) Information Security Protocol"
+                        ],
+                        correctAnswer: "C) Internet Service Provider",
+                        explanation: "An ISP (Internet Service Provider) is an organization that provides services for accessing, using, or participating in the Internet."
+                    },
+                    {
+                        question: "Which type of Internet connection is described as cheap but slow, connecting via a modem and a phone number?",
+                        options: [
+                            "A) DSL",
+                            "B) Cable",
+                            "C) Wireless",
+                            "D) Dial-up"
+                        ],
+                        correctAnswer: "D) Dial-up",
+                        explanation: "Dial-up internet access uses a modem to connect to an ISP over a standard telephone line. It is generally slow and ties up the phone line during use."
+                    },
+                    {
+                        question: "DSL (Digital Subscriber Line) internet connection is characterized by:",
+                        options: [
+                            "A) Tying up the phone line when connected.",
+                            "B) Being an \"always on\" connection that uses two lines.",
+                            "C) Operating over cable TV lines.",
+                            "D) Using radio frequency for connection."
+                        ],
+                        correctAnswer: "B) Being an \"always on\" connection that uses two lines.",
+                        explanation: "DSL provides internet access over standard telephone lines but uses a separate frequency, allowing the phone line to remain free for voice calls while connected to the internet ('always on')."
+                    },
+                    {
+                        question: "Which Internet access technique uses radio frequency and does not require telephone lines or cables?",
+                        options: [
+                            "A) Dial-up",
+                            "B) DSL",
+                            "C) Cable",
+                            "D) Wireless (Wi-Fi)"
+                        ],
+                        correctAnswer: "D) Wireless (Wi-Fi)",
+                        explanation: "Wireless internet access (Wi-Fi) uses radio waves to provide network connectivity, eliminating the need for physical cables for connection."
+                    },
+                    {
+                        question: "What is the typical speed range for a 3G cellular network?",
+                        options: [
+                            "A) 512K to 2.0 Mbps",
+                            "B) Around 2.0 Mbps",
+                            "C) 100 Mbps",
+                            "D) 5 Mbps to 20 Mbps"
+                        ],
+                        correctAnswer: "B) Around 2.0 Mbps",
+                        explanation: "3G (third-generation) cellular networks typically offer speeds around 2.0 Mbps, which was a significant improvement over 2G but slower than modern 4G and 5G networks."
+                    },
+                    {
+                        question: "The Internet architecture is based on the idea that all networks want to be part of carrying a single packet type, a specific format called the:",
+                        options: [
+                            "A) HTTP protocol",
+                            "B) FTP protocol",
+                            "C) IP protocol",
+                            "D) SMTP protocol"
+                        ],
+                        correctAnswer: "C) IP protocol",
+                        explanation: "The Internet Protocol (IP) is the primary protocol in the TCP/IP suite. It is responsible for addressing and routing packets of data across networks, forming the backbone of the Internet."
+                    },
+                    {
+                        question: "Which layer of the Internet architecture includes protocols for services like Email (SMTP) and file transfer (FTP)?",
+                        options: [
+                            "A) Physical layer",
+                            "B) Data link layer",
+                            "C) Network layer",
+                            "D) Application layer"
+                        ],
+                        correctAnswer: "D) Application layer",
+                        explanation: "The Application Layer is the highest layer in the TCP/IP model. It provides network services directly to end-user applications, including protocols like SMTP (for email), FTP (for file transfer), and HTTP (for web browsing)."
+                    },
+                    {
+                        question: "What is a disadvantage of WANs compared to LANs and MANs?",
+                        options: [
+                            "A) Lower setup cost",
+                            "B) Fewer security problems",
+                            "C) More difficult troubleshooting",
+                            "D) Limited geographical coverage"
+                        ],
+                        correctAnswer: "C) More difficult troubleshooting",
+                        explanation: "WANs cover vast geographical areas and involve complex infrastructure, making them more challenging to troubleshoot and maintain compared to smaller LANs and MANs."
+                    }
+                ]
+            },
+            {
+                chapter: "CHAPTER 6: WWW and Web Browser",
+                questions: [
+                    {
+                        question: "\"Browsing the web\" primarily means:",
+                        options: [
+                            "A) Creating web pages",
+                            "B) Accessing the Internet via a browser",
+                            "C) Developing web applications",
+                            "D) Configuring network settings"
+                        ],
+                        correctAnswer: "B) Accessing the Internet via a browser",
+                        explanation: "Browsing the web refers to the act of navigating and viewing web pages on the World Wide Web using a web browser application."
+                    },
+                    {
+                        question: "Which of the following is NOT listed as a major web browser in the chapter?",
+                        options: [
+                            "A) Internet Explorer",
+                            "B) Google Chrome",
+                            "C) Microsoft Word",
+                            "D) Firefox"
+                        ],
+                        correctAnswer: "C) Microsoft Word",
+                        explanation: "Internet Explorer, Google Chrome, and Firefox are all popular web browsers. Microsoft Word is a word processing application, not a web browser."
+                    },
+                    {
+                        question: "A web browser is a software application for accessing information on the:",
+                        options: [
+                            "A) Local computer only",
+                            "B) World Wide Web",
+                            "C) Specific network drive",
+                            "D) Printer"
+                        ],
+                        correctAnswer: "B) World Wide Web",
+                        explanation: "A web browser is specifically designed to retrieve, present, and traverse information resources on the World Wide Web."
+                    },
+                    {
+                        question: "Each individual web page, image, and video is identified by a distinct:",
+                        options: [
+                            "A) IP Address",
+                            "B) MAC Address",
+                            "C) URL",
+                            "D) Server Name"
+                        ],
+                        correctAnswer: "C) URL",
+                        explanation: "A URL (Uniform Resource Locator) is the unique address that identifies a specific resource (like a web page, image, or video) on the Internet."
+                    },
+                    {
+                        question: "What is the typical location of the \"Address Bar\" in a web browser?",
+                        options: [
+                            "A) Bottom of the browser",
+                            "B) Top of the browser",
+                            "C) Side panel",
+                            "D) Status bar"
+                        ],
+                        correctAnswer: "B) Top of the browser",
+                        explanation: "The Address Bar is typically located at the top of the web browser window, where you can type in URLs or search queries."
+                    },
+                    {
+                        question: "To navigate to a specific website, you type its full URL into the:",
+                        options: [
+                            "A) Search bar",
+                            "B) Address Bar",
+                            "C) Status bar",
+                            "D) Title bar"
+                        ],
+                        correctAnswer: "B) Address Bar",
+                        explanation: "The Address Bar is where you enter the Uniform Resource Locator (URL) of the website you wish to visit."
+                    },
+                    {
+                        question: "What does \"Downloading a Web Page\" mean?",
+                        options: [
+                            "A) Uploading a page to a server.",
+                            "B) Saving a copy of the web page to your computer.",
+                            "C) Printing a web page.",
+                            "D) Browsing a web page online."
+                        ],
+                        correctAnswer: "B) Saving a copy of the web page to your computer.",
+                        explanation: "Downloading a web page means retrieving its content from a web server and storing a local copy on your computer for offline viewing or archival purposes."
+                    },
+                    {
+                        question: "A software, typically accessed on the Internet, that searches a database of information according to the user's query is called a:",
+                        options: [
+                            "A) Web browser",
+                            "B) Website",
+                            "C) Search engine",
+                            "D) Web server"
+                        ],
+                        correctAnswer: "C) Search engine",
+                        explanation: "A search engine is a software system designed to carry out web searches, which means to search the World Wide Web in a systematic way for particular information specified in a textual web search query."
+                    },
+                    {
+                        question: "Which of the following is the most popular and well-known search engine mentioned?",
+                        options: [
+                            "A) AOL",
+                            "B) Bing",
+                            "C) Yahoo",
+                            "D) Google"
+                        ],
+                        correctAnswer: "D) Google",
+                        explanation: "Google is by far the most dominant and widely used search engine globally."
+                    },
+                    {
+                        question: "What is the keyboard shortcut to start the print process for a web page?",
+                        options: [
+                            "A) Ctrl + S",
+                            "B) Ctrl + C",
+                            "C) Ctrl + P",
+                            "D) Ctrl + V"
+                        ],
+                        correctAnswer: "C) Ctrl + P",
+                        explanation: "Ctrl + P is the standard keyboard shortcut in most applications, including web browsers, to open the print dialog box."
+                    },
+                    {
+                        question: "To set a web page as your \"Home Page\" in Internet Explorer, you typically go to:",
+                        options: [
+                            "A) File menu -> Save As",
+                            "B) Tools menu -> Internet Options -> General tab",
+                            "C) View menu -> Zoom",
+                            "D) History menu -> Clear History"
+                        ],
+                        correctAnswer: "B) Tools menu -> Internet Options -> General tab",
+                        explanation: "In Internet Explorer, the 'Internet Options' dialog, accessible via the 'Tools' menu, allows you to configure various browser settings, including the home page on the 'General' tab."
+                    },
+                    {
+                        question: "The \"Refresh Button\" in a web browser is used to:",
+                        options: [
+                            "A) Go back to the previous page.",
+                            "B) Reload the current web page.",
+                            "C) Close the browser.",
+                            "D) Open a new tab."
+                        ],
+                        correctAnswer: "B) Reload the current web page.",
+                        explanation: "The Refresh button (often a circular arrow icon) reloads the content of the current web page from the server, useful for seeing updated information."
+                    },
+                    {
+                        question: "What is the purpose of \"Bookmarks\" or \"Favorites\" in a web browser?",
+                        options: [
+                            "A) To temporarily store browsing history.",
+                            "B) To save frequently visited websites for quick access.",
+                            "C) To block unwanted websites.",
+                            "D) To change browser themes."
+                        ],
+                        correctAnswer: "B) To save frequently visited websites for quick access.",
+                        explanation: "Bookmarks (or Favorites) allow users to save the URLs of frequently visited or important websites, enabling quick access without having to retype the address."
+                    },
+                    {
+                        question: "How do you typically open a web browser?",
+                        options: [
+                            "A) By right-clicking the desktop background.",
+                            "B) By double-clicking its icon on the desktop.",
+                            "C) By typing its name in the Command Prompt.",
+                            "D) By restarting the computer."
+                        ],
+                        correctAnswer: "B) By double-clicking its icon on the desktop.",
+                        explanation: "The most common way to launch a web browser is by double-clicking its shortcut icon located on the desktop, taskbar, or Start menu."
+                    },
+                    {
+                        question: "What is the default web browser with Windows, as implied by the printing instructions?",
+                        options: [
+                            "A) Google Chrome",
+                            "B) Firefox",
+                            "C) Internet Explorer",
+                            "D) Opera"
+                        ],
+                        correctAnswer: "C) Internet Explorer",
+                        explanation: "Historically, Internet Explorer was the default web browser included with Microsoft Windows operating systems. While Edge has replaced it, the text implies IE's historical default status."
+                    },
+                    {
+                        question: "When configuring a web browser for proxy settings, you typically access these settings through:",
+                        options: [
+                            "A) The \"Help\" menu",
+                            "B) The \"Internet Options\" in the tools menu",
+                            "C) The \"View\" menu",
+                            "D) The \"File\" menu"
+                        ],
+                        correctAnswer: "B) The \"Internet Options\" in the tools menu",
+                        explanation: "Proxy settings, which control how your browser connects to the internet through a proxy server, are usually found within the network or connection settings, often under 'Internet Options' or similar in the browser's settings/tools menu."
+                    },
+                    {
+                        question: "What is the purpose of setting a proxy server for your LAN in browser configuration?",
+                        options: [
+                            "A) To increase internet speed.",
+                            "B) To bypass all security measures.",
+                            "C) To route internet traffic through a specific server.",
+                            "D) To automatically detect network settings."
+                        ],
+                        correctAnswer: "C) To route internet traffic through a specific server.",
+                        explanation: "A proxy server acts as an intermediary for requests from clients seeking resources from other servers. It can be used for security, caching, or to control access."
+                    },
+                    {
+                        question: "Which of the following is NOT a platform on which web browsers can be installed?",
+                        options: [
+                            "A) Mac",
+                            "B) Windows",
+                            "C) Android",
+                            "D) Calculator"
+                        ],
+                        correctAnswer: "D) Calculator",
+                        explanation: "Web browsers are software applications designed to run on operating systems like Windows, macOS, Linux, Android, and iOS. A calculator is a dedicated device or simple application not designed to run a web browser."
+                    },
+                    {
+                        question: "What is the general appearance of the web browser window after opening it?",
+                        options: [
+                            "A) A blank screen with no controls.",
+                            "B) A window with an Address Bar, navigation buttons, and menus.",
+                            "C) Only a search bar.",
+                            "D) A command-line interface."
+                        ],
+                        correctAnswer: "B) A window with an Address Bar, navigation buttons, and menus.",
+                        explanation: "A typical web browser window includes essential interface elements like an Address Bar for URLs, navigation buttons (back, forward, refresh), and menus for various browser functions."
+                    },
+                    {
+                        question: "The \"History\" menu in a web browser allows you to:",
+                        options: [
+                            "A) Clear all saved passwords.",
+                            "B) View previously visited web pages.",
+                            "C) Change browser settings.",
+                            "D) Download files."
+                        ],
+                        correctAnswer: "B) View previously visited web pages.",
+                        explanation: "The browser's history feature records the web pages you have visited, allowing you to easily revisit them later."
+                    }
+                ]
+            },
+            {
+                chapter: "CHAPTER 7: Communication & Collaboration",
+                questions: [
+                    {
+                        question: "Communication is defined as the exchange of information to achieve:",
+                        options: [
+                            "A) Disagreement",
+                            "B) Better understanding",
+                            "C) Competition",
+                            "D) Isolation"
+                        ],
+                        correctAnswer: "B) Better understanding",
+                        explanation: "The primary goal of communication is to convey information effectively, leading to shared understanding between individuals or groups."
+                    },
+                    {
+                        question: "Collaboration is defined as the exchange of information and things to:",
+                        options: [
+                            "A) Maintain status quo",
+                            "B) Advance the state of a collaborative product",
+                            "C) Limit information flow",
+                            "D) Create individual work only"
+                        ],
+                        correctAnswer: "B) Advance the state of a collaborative product",
+                        explanation: "Collaboration involves working together towards a common goal, often by sharing resources, knowledge, and efforts to develop or improve a shared outcome."
+                    },
+                    {
+                        question: "What is Electronic Mail (email)?",
+                        options: [
+                            "A) A method of sending physical letters.",
+                            "B) A method of exchanging messages between people using electronic devices.",
+                            "C) A type of instant messaging.",
+                            "D) A video conferencing tool."
+                        ],
+                        correctAnswer: "B) A method of exchanging messages between people using electronic devices.",
+                        explanation: "Email is a digital communication method that allows users to send and receive messages over computer networks, typically the Internet."
+                    },
+                    {
+                        question: "Who sent the first email and in what year?",
+                        options: [
+                            "A) Bill Gates in 1985",
+                            "B) Steve Jobs in 1990",
+                            "C) Ray Tomlinson in 1971",
+                            "D) Mark Zuckerberg in 2004"
+                        ],
+                        correctAnswer: "C) Ray Tomlinson in 1971",
+                        explanation: "Ray Tomlinson is credited with sending the first email in 1971, which also introduced the use of the '@' symbol to separate the username from the host name in email addresses."
+                    },
+                    {
+                        question: "What is the standard format for an email address on the Internet?",
+                        options: [
+                            "A) <username>.<domain name>.<Domain Extension>",
+                            "B) <username>/<domain name>/<Domain Extension>",
+                            "C) <username>@<domain name><Domain Extension>",
+                            "D) <domain name>@<username><Domain Extension>"
+                        ],
+                        correctAnswer: "C) <username>@<domain name><Domain Extension>",
+                        explanation: "The standard format for an email address is 'username@domain.extension', where the username identifies the individual and the domain identifies the mail server."
+                    },
+                    {
+                        question: "In an email, what does \"CC\" stand for?",
+                        options: [
+                            "A) Confidential Copy",
+                            "B) Carbon Copy",
+                            "C) Courtesy Copy",
+                            "D) Closed Copy"
+                        ],
+                        correctAnswer: "B) Carbon Copy",
+                        explanation: "CC stands for Carbon Copy. Recipients in the CC field receive a copy of the email, and all other recipients can see who is in the CC field."
+                    },
+                    {
+                        question: "When using \"BCC\" in an email:",
+                        options: [
+                            "A) All recipients can see who is in the BCC field.",
+                            "B) Only the sender can see who is in the BCC field.",
+                            "C) Recipients in the \"To\" and \"CC\" fields will know who was in the BCC field.",
+                            "D) The mail will not be sent if the \"To\" field is empty."
+                        ],
+                        correctAnswer: "B) Only the sender can see who is in the BCC field.",
+                        explanation: "BCC stands for Blind Carbon Copy. Recipients in the BCC field receive a copy of the email, but their email addresses are hidden from all other recipients, including those in the To and CC fields."
+                    },
+                    {
+                        question: "The \"Subject\" part of an email is primarily:",
+                        options: [
+                            "A) The actual content of the message.",
+                            "B) The primary recipient's address.",
+                            "C) The topic of the message.",
+                            "D) The attachment file."
+                        ],
+                        correctAnswer: "C) The topic of the message.",
+                        explanation: "The Subject line provides a brief summary or topic of the email's content, helping recipients understand the email's purpose at a glance."
+                    },
+                    {
+                        question: "What is the \"Inbox\" in an email client?",
+                        options: [
+                            "A) The folder where outgoing messages are stored.",
+                            "B) The default location for all incoming mail.",
+                            "C) The folder for deleted messages.",
+                            "D) The place where drafts are saved."
+                        ],
+                        correctAnswer: "B) The default location for all incoming mail.",
+                        explanation: "The Inbox is the primary folder in an email client where all received email messages are typically stored."
+                    },
+                    {
+                        question: "Where are email messages stored before being sent?",
+                        options: [
+                            "A) Inbox",
+                            "B) Sent Items",
+                            "C) Outbox",
+                            "D) Drafts"
+                        ],
+                        correctAnswer: "C) Outbox",
+                        explanation: "The Outbox is a temporary folder where outgoing email messages are held before they are successfully sent to the mail server."
+                    },
+                    {
+                        question: "What happens to a message after it has been successfully sent from the outbox?",
+                        options: [
+                            "A) It remains in the outbox.",
+                            "B) It is moved to the \"Sent\" or \"Sent Messages\" folder.",
+                            "C) It is deleted permanently.",
+                            "D) It is moved to the drafts folder."
+                        ],
+                        correctAnswer: "B) It is moved to the \"Sent\" or \"Sent Messages\" folder.",
+                        explanation: "Once an email is successfully sent from the Outbox, a copy is typically moved to the 'Sent' or 'Sent Messages' folder for your records."
+                    },
+                    {
+                        question: "To compose a new email in Gmail, you typically click:",
+                        options: [
+                            "A) Reply",
+                            "B) Forward",
+                            "C) Compose",
+                            "D) Inbox"
+                        ],
+                        correctAnswer: "C) Compose",
+                        explanation: "In Gmail and many other email clients, the 'Compose' button (often represented by a plus sign or a pen icon) is used to start writing a new email message."
+                    },
+                    {
+                        question: "What is \"Instant Messaging\"?",
+                        options: [
+                            "A) A method of sending physical mail.",
+                            "B) A real-time text-based communication between individuals or groups.",
+                            "C) A way to send emails with attachments.",
+                            "D) A method for file transfer only."
+                        ],
+                        correctAnswer: "B) A real-time text-based communication between individuals or groups.",
+                        explanation: "Instant Messaging (IM) allows for real-time, text-based conversations between two or more people over a network, often with features like emojis, file sharing, and voice/video calls."
+                    },
+                    {
+                        question: "What does \"CAPTCHA\" stand for?",
+                        options: [
+                            "A) Completely Automated Public Test to Check Humans Apart",
+                            "B) Completely Automated Public Turing test to tell Computers and Humans Apart",
+                            "C) Computerized Automated Program for Textual Human Analysis",
+                            "D) Centralized Automated Processing and Tracking Human Activity"
+                        ],
+                        correctAnswer: "B) Completely Automated Public Turing test to tell Computers and Humans Apart",
+                        explanation: "CAPTCHA is a type of challenge-response test used in computing to determine whether or not the user is human. It helps prevent automated bots from performing actions like creating fake accounts or sending spam."
+                    },
+                    {
+                        question: "What is the purpose of a CAPTCHA code when creating an email account?",
+                        options: [
+                            "A) To verify your phone number.",
+                            "B) To prove you are a human and not a spamming robot.",
+                            "C) To select your username.",
+                            "D) To accept terms and conditions."
+                        ],
+                        correctAnswer: "B) To prove you are a human and not a spamming robot.",
+                        explanation: "CAPTCHA codes are used during account creation to ensure that a real human is setting up the account, preventing automated programs from creating numerous fake accounts for spamming or other malicious activities."
+                    },
+                    {
+                        question: "What is \"Spam\" in the context of email?",
+                        options: [
+                            "A) Important business emails.",
+                            "B) Unsolicited or undesired electronic messages, typically advertisements.",
+                            "C) Emails with attachments.",
+                            "D) Emails sent to a contact group."
+                        ],
+                        correctAnswer: "B) Unsolicited or undesired electronic messages, typically advertisements.",
+                        explanation: "Spam refers to irrelevant or unsolicited messages sent over the Internet, typically to a large number of users, for the purposes of advertising, phishing, spreading malware, etc."
+                    },
+                    {
+                        question: "To filter emails and prevent them from going to the spam folder in Gmail, you would typically go to:",
+                        options: [
+                            "A) Inbox settings",
+                            "B) Sent Items",
+                            "C) Settings -> Filters and Blocked Addresses",
+                            "D) Drafts"
+                        ],
+                        correctAnswer: "C) Settings -> Filters and Blocked Addresses",
+                        explanation: "In Gmail, you can create filters to automatically manage incoming emails, including preventing certain emails from being marked as spam, by configuring rules under 'Settings' and then 'Filters and Blocked Addresses'."
+                    },
+                    {
+                        question: "A smiley face symbol like \":)\" in text conversations represents a:",
+                        options: [
+                            "A) Command",
+                            "B) File attachment",
+                            "C) Facial expression or emotion",
+                            "D) Link"
+                        ],
+                        correctAnswer: "C) Facial expression or emotion",
+                        explanation: "Emoticons (like :) ) or emojis are used in text-based communication to convey emotions, facial expressions, or other non-verbal cues that are otherwise missing in text."
+                    },
+                    {
+                        question: "What is the role of an email server in email addressing?",
+                        options: [
+                            "A) It stores the email client software.",
+                            "B) It manages all email addresses at a specific Internet domain.",
+                            "C) It encrypts email content.",
+                            "D) It sends emails directly to recipients without a domain."
+                        ],
+                        correctAnswer: "B) It manages all email addresses at a specific Internet domain.",
+                        explanation: "An email server (or mail server) is a computer system that sends and receives email messages. It manages email accounts and mailboxes for a specific domain."
+                    },
+                    {
+                        question: "What is the \"domain\" part of an email address?",
+                        options: [
+                            "A) The username.",
+                            "B) The \"@\" symbol.",
+                            "C) The mail server and top-level domain (e.g., yahoo.com, gmail.com).",
+                            "D) The subject of the email."
+                        ],
+                        correctAnswer: "C) The mail server and top-level domain (e.g., yahoo.com, gmail.com).",
+                        explanation: "The domain part of an email address (e.g., 'gmail.com' in 'user@gmail.com') identifies the mail server that hosts the email account and the top-level domain."
+                    }
+                ]
+            },
+            {
+                chapter: "CHAPTER 8: Making Small Presentations",
+                questions: [
+                    {
+                        question: "Microsoft PowerPoint 2010 is a presentation tool designed to help users create:",
+                        options: [
+                            "A) Spreadsheets",
+                            "B) Databases",
+                            "C) Informative slides with text, graphics, movies, etc.",
+                            "D) Word documents"
+                        ],
+                        correctAnswer: "C) Informative slides with text, graphics, movies, etc.",
+                        explanation: "PowerPoint is a presentation software that allows users to create slide-based presentations incorporating various media elements like text, images, audio, and video."
+                    },
+                    {
+                        question: "PowerPoint presentations are frequently used in which settings?",
+                        options: [
+                            "A) Only business meetings",
+                            "B) Only educational lectures",
+                            "C) Business and educational settings",
+                            "D) Only for personal use"
+                        ],
+                        correctAnswer: "C) Business and educational settings",
+                        explanation: "PowerPoint is a versatile tool widely used in both professional (business meetings, conferences) and academic (lectures, student projects) environments for visual communication."
+                    },
+                    {
+                        question: "To open a PowerPoint Presentation, the first step is to click the:",
+                        options: [
+                            "A) File tab",
+                            "B) Insert tab",
+                            "C) Start button",
+                            "D) Design tab"
+                        ],
+                        correctAnswer: "C) Start button",
+                        explanation: "To launch PowerPoint, you typically click the Windows Start button, then navigate to All Programs (or All apps) and select Microsoft PowerPoint."
+                    },
+                    {
+                        question: "When saving a presentation for the first time, you typically use the \"Save As\" option to specify:",
+                        options: [
+                            "A) Only the file name",
+                            "B) Only the location",
+                            "C) Both the file name and the location",
+                            "D) The slide count"
+                        ],
+                        correctAnswer: "C) Both the file name and the location",
+                        explanation: "The 'Save As' command is used when you want to save a new file for the first time or save an existing file with a new name or in a different location."
+                    },
+                    {
+                        question: "The default file format for saving a PowerPoint presentation is:",
+                        options: [
+                            "A) .doc",
+                            "B) .xlsx",
+                            "C) .pptx",
+                            "D) .pdf"
+                        ],
+                        correctAnswer: "C) .pptx",
+                        explanation: ".pptx is the default file extension for PowerPoint presentations created in PowerPoint 2007 and later versions, based on the Office Open XML format."
+                    },
+                    {
+                        question: "If you are working on an already saved PowerPoint file and want to change its format or filename, you should use:",
+                        options: [
+                            "A) The \"Save\" option",
+                            "B) The \"Save As\" option",
+                            "C) The \"Open\" option",
+                            "D) The \"Print\" option"
+                        ],
+                        correctAnswer: "B) The \"Save As\" option",
+                        explanation: "To save an existing file with a new name, a different file format, or in a new location, you must use the 'Save As' command."
+                    },
+                    {
+                        question: "To create a new blank presentation, after clicking the File tab and selecting New, you should then select:",
+                        options: [
+                            "A) Sample templates",
+                            "B) My templates",
+                            "C) Blank presentation",
+                            "D) Recent templates"
+                        ],
+                        correctAnswer: "C) Blank presentation",
+                        explanation: "When creating a new presentation, selecting 'Blank presentation' provides an empty set of slides, allowing you to build the presentation from scratch."
+                    },
+                    {
+                        question: "When entering text into a slide, where does the insertion point appear after clicking a placeholder or text box?",
+                        options: [
+                            "A) At the end of the slide",
+                            "B) At the beginning of the placeholder/text box",
+                            "C) In the slide notes",
+                            "D) In the outline view"
+                        ],
+                        correctAnswer: "B) At the beginning of the placeholder/text box",
+                        explanation: "Clicking a text placeholder or text box activates it for editing, and the insertion point (cursor) will appear at the beginning, ready for text input."
+                    },
+                    {
+                        question: "To insert a new slide into a presentation, you can right-click in the Navigation Pane and select:",
+                        options: [
+                            "A) Duplicate Slide",
+                            "B) Delete Slide",
+                            "C) New Slide",
+                            "D) Hide Slide"
+                        ],
+                        correctAnswer: "C) New Slide",
+                        explanation: "Right-clicking in the slide navigation pane (thumbnail view) and selecting 'New Slide' is a quick way to add a new slide to your presentation."
+                    },
+                    {
+                        question: "To insert spreadsheet-like tables into a slide, you should go to the:",
+                        options: [
+                            "A) Home tab",
+                            "B) Design tab",
+                            "C) Insert tab",
+                            "D) Review tab"
+                        ],
+                        correctAnswer: "C) Insert tab",
+                        explanation: "The 'Insert' tab in PowerPoint provides options to add various objects, including tables, pictures, shapes, charts, and text boxes, to your slides."
+                    }
+                ]
+            },
+            {
+                chapter: "CHAPTER 9: Database Management System",
+                questions: [
+                    {
+                        question: "A Database Management System (DBMS) is primarily used for:",
+                        options: [
+                            "A) Creating simple text documents",
+                            "B) Managing and organizing large amounts of data",
+                            "C) Designing graphical user interfaces",
+                            "D) Performing complex mathematical calculations"
+                        ],
+                        correctAnswer: "B) Managing and organizing large amounts of data",
+                        explanation: "A DBMS is software designed to create, manage, and retrieve data from databases. Its primary purpose is to efficiently store, organize, and access large volumes of structured data."
+                    },
+                    {
+                        question: "Which of the following is NOT a common component of a DBMS?",
+                        options: [
+                            "A) Data Definition Language (DDL)",
+                            "B) Data Manipulation Language (DML)",
+                            "C) Query Processor",
+                            "D) Word Processor"
+                        ],
+                        correctAnswer: "D) Word Processor",
+                        explanation: "A word processor (like Microsoft Word) is application software for creating text documents and is not a component of a Database Management System. DDL, DML, and Query Processor are core DBMS components."
+                    },
+                    {
+                        question: "In a relational database, data is organized into:",
+                        options: [
+                            "A) Hierarchies",
+                            "B) Networks",
+                            "C) Tables (relations)",
+                            "D) Files"
+                        ],
+                        correctAnswer: "C) Tables (relations)",
+                        explanation: "Relational databases organize data into tables, also known as relations. Each table consists of rows and columns, with relationships defined between tables."
+                    },
+                    {
+                        question: "A 'row' in a database table is also known as a:",
+                        options: [
+                            "A) Field",
+                            "B) Attribute",
+                            "C) Record (tuple)",
+                            "D) Column"
+                        ],
+                        correctAnswer: "C) Record (tuple)",
+                        explanation: "In database terminology, a row represents a single entry or instance of data in a table, often referred to as a record or tuple."
+                    },
+                    {
+                        question: "A 'column' in a database table is also known as a:",
+                        options: [
+                            "A) Record",
+                            "B) Entity",
+                            "C) Tuple",
+                            "D) Field (attribute)"
+                        ],
+                        correctAnswer: "D) Field (attribute)",
+                        explanation: "A column in a database table represents a specific category of data, or an attribute, for each record. It is also commonly called a field."
+                    },
+                    {
+                        question: "What is a 'Primary Key' in a database table?",
+                        options: [
+                            "A) A field that can contain duplicate values.",
+                            "B) A field that uniquely identifies each record in a table.",
+                            "C) A field used for sorting data.",
+                            "D) A field that links to another table."
+                        ],
+                        correctAnswer: "B) A field that uniquely identifies each record in a table.",
+                        explanation: "A Primary Key is a column or a set of columns in a table that uniquely identifies each row (record) in that table. It cannot contain duplicate or NULL values."
+                    },
+                    {
+                        question: "SQL stands for:",
+                        options: [
+                            "A) Structured Question Language",
+                            "B) Standard Query Logic",
+                            "C) Simple Query Language",
+                            "D) Structured Query Language"
+                        ],
+                        correctAnswer: "D) Structured Query Language",
+                        explanation: "SQL (Structured Query Language) is a standard language for managing and manipulating relational databases. It is used to query, insert, update, and delete data."
+                    },
+                    {
+                        question: "Which SQL command is used to retrieve data from a database?",
+                        options: [
+                            "A) INSERT",
+                            "B) UPDATE",
+                            "C) SELECT",
+                            "D) DELETE"
+                        ],
+                        correctAnswer: "C) SELECT",
+                        explanation: "The `SELECT` statement is the most commonly used SQL command. It is used to retrieve data from one or more tables in a database."
+                    },
+                    {
+                        question: "Which SQL command is used to add new rows of data into a table?",
+                        options: [
+                            "A) CREATE TABLE",
+                            "B) INSERT INTO",
+                            "C) ADD RECORD",
+                            "D) NEW ROW"
+                        ],
+                        correctAnswer: "B) INSERT INTO",
+                        explanation: "The `INSERT INTO` statement in SQL is used to add new records (rows) of data into a table."
+                    },
+                    {
+                        question: "Which of the following is an advantage of using a DBMS?",
+                        options: [
+                            "A) Increased data redundancy",
+                            "B) Reduced data security",
+                            "C) Improved data sharing and integration",
+                            "D) Limited data independence"
+                        ],
+                        correctAnswer: "C) Improved data sharing and integration",
+                        explanation: "A DBMS centralizes data, making it easier to share data among different applications and users, and promotes data integration by reducing data silos."
+                    },
+                    {
+                        question: "What is 'data redundancy' in a database context?",
+                        options: [
+                            "A) Storing data only once.",
+                            "B) Duplication of data across multiple locations.",
+                            "C) Ensuring data consistency.",
+                            "D) Efficient data retrieval."
+                        ],
+                        correctAnswer: "B) Duplication of data across multiple locations.",
+                        explanation: "Data redundancy refers to the unnecessary repetition or duplication of data within a database. DBMS aims to minimize this to ensure data consistency and integrity."
+                    },
+                    {
+                        question: "A 'Foreign Key' is used to:",
+                        options: [
+                            "A) Uniquely identify a record in its own table.",
+                            "B) Establish a link between two tables.",
+                            "C) Sort data in ascending order.",
+                            "D) Define the data type of a column."
+                        ],
+                        correctAnswer: "B) Establish a link between two tables.",
+                        explanation: "A Foreign Key is a field (or collection of fields) in one table that refers to the Primary Key in another table. It is used to link the two tables together and enforce referential integrity."
+                    },
+                    {
+                        question: "Which of the following is an example of a popular relational DBMS?",
+                        options: [
+                            "A) Microsoft Word",
+                            "B) Adobe Photoshop",
+                            "C) MySQL",
+                            "D) VLC Media Player"
+                        ],
+                        correctAnswer: "C) MySQL",
+                        explanation: "MySQL is a widely used open-source relational database management system (RDBMS). Microsoft Word, Adobe Photoshop, and VLC Media Player are application software, not DBMS."
+                    },
+                    {
+                        question: "The overall design of a database is called its:",
+                        options: [
+                            "A) Instance",
+                            "B) Schema",
+                            "C) View",
+                            "D) Model"
+                        ],
+                        correctAnswer: "B) Schema",
+                        explanation: "The schema describes the logical structure of the entire database, including the tables, fields, relationships, and constraints."
+                    },
+                    {
+                        question: "What does 'Normalization' in database design aim to achieve?",
+                        options: [
+                            "A) Increase data redundancy.",
+                            "B) Improve data integrity and reduce data anomalies.",
+                            "C) Make queries more complex.",
+                            "D) Speed up data entry."
+                        ],
+                        correctAnswer: "B) Improve data integrity and reduce data anomalies.",
+                        explanation: "Normalization is a process of organizing the columns and tables of a relational database to minimize data redundancy and improve data integrity. It helps avoid update, insertion, and deletion anomalies."
+                    }
+                ]
+            },
+            {
+                chapter: "CHAPTER 10: Computer Security and Ethics",
+                questions: [
+                    {
+                        question: "What is the primary goal of computer security?",
+                        options: [
+                            "A) To make computers run faster",
+                            "B) To protect computer systems and data from unauthorized access, use, disclosure, disruption, modification, or destruction",
+                            "C) To simplify software installation",
+                            "D) To reduce power consumption"
+                        ],
+                        correctAnswer: "B) To protect computer systems and data from unauthorized access, use, disclosure, disruption, modification, or destruction",
+                        explanation: "Computer security aims to ensure the confidentiality, integrity, and availability (CIA triad) of computer systems and data by protecting them from various threats."
+                    },
+                    {
+                        question: "Which of the following is an example of a 'Malware'?",
+                        options: [
+                            "A) Operating System",
+                            "B) Web Browser",
+                            "C) Virus",
+                            "D) Spreadsheet Program"
+                        ],
+                        correctAnswer: "C) Virus",
+                        explanation: "Malware (malicious software) is a broad term for any software designed to cause harm to a computer system or steal data. A virus is a common type of malware."
+                    },
+                    {
+                        question: "What is 'Phishing'?",
+                        options: [
+                            "A) A method of securing network connections.",
+                            "B) A type of online game.",
+                            "C) A fraudulent attempt to obtain sensitive information by disguising as a trustworthy entity.",
+                            "D) A technique for optimizing database queries."
+                        ],
+                        correctAnswer: "C) A fraudulent attempt to obtain sensitive information by disguising as a trustworthy entity.",
+                        explanation: "Phishing is a cybercrime where attackers trick individuals into revealing sensitive information (like usernames, passwords, credit card details) by impersonating a legitimate entity in electronic communication."
+                    },
+                    {
+                        question: "A 'Firewall' is a network security system that:",
+                        options: [
+                            "A) Speeds up internet browsing.",
+                            "B) Monitors and controls incoming and outgoing network traffic based on predetermined security rules.",
+                            "C) Encrypts all data on a hard drive.",
+                            "D) Automatically deletes old files."
+                        ],
+                        correctAnswer: "B) Monitors and controls incoming and outgoing network traffic based on predetermined security rules.",
+                        explanation: "A firewall acts as a barrier between a trusted internal network and untrusted external networks (like the Internet), filtering traffic to prevent unauthorized access."
+                    },
+                    {
+                        question: "What is 'Encryption'?",
+                        options: [
+                            "A) The process of converting data into a code to prevent unauthorized access.",
+                            "B) The process of making data publicly accessible.",
+                            "C) The process of deleting data permanently.",
+                            "D) The process of backing up data."
+                        ],
+                        correctAnswer: "A) The process of converting data into a code to prevent unauthorized access.",
+                        explanation: "Encryption is the process of transforming information (plaintext) into an unreadable format (ciphertext) to secure it from unauthorized access. Decryption is the reverse process."
+                    },
+                    {
+                        question: "Which of the following is a good practice for creating strong passwords?",
+                        options: [
+                            "A) Using your birth date.",
+                            "B) Using common words like 'password123'.",
+                            "C) Combining uppercase and lowercase letters, numbers, and symbols.",
+                            "D) Using only lowercase letters."
+                        ],
+                        correctAnswer: "C) Combining uppercase and lowercase letters, numbers, and symbols.",
+                        explanation: "Strong passwords are long, unique, and combine a mix of character types (uppercase, lowercase, numbers, symbols) to make them difficult for attackers to guess or crack."
+                    },
+                    {
+                        question: "What does 'Cyberbullying' refer to?",
+                        options: [
+                            "A) Using computers for educational purposes.",
+                            "B) The use of electronic communication to bully a person, typically by sending messages of an intimidating or threatening nature.",
+                            "C) Developing secure software applications.",
+                            "D) Participating in online forums respectfully."
+                        ],
+                        correctAnswer: "B) The use of electronic communication to bully a person, typically by sending messages of an intimidating or threatening nature.",
+                        explanation: "Cyberbullying involves using digital technologies to harass, threaten, or intimidate someone, often through social media, messaging apps, or online forums."
+                    },
+                    {
+                        question: "What is 'Plagiarism' in the context of digital content?",
+                        options: [
+                            "A) Citing sources correctly.",
+                            "B) Using someone else's work or ideas and passing them off as your own without proper attribution.",
+                            "C) Collaborating on a project.",
+                            "D) Sharing your own original work online."
+                        ],
+                        correctAnswer: "B) Using someone else's work or ideas and passing them off as your own without proper attribution.",
+                        explanation: "Plagiarism is the act of presenting someone else's words, ideas, or work as your own without acknowledging the original source. This applies to digital content as well."
+                    },
+                    {
+                        question: "Which of the following is an ethical consideration when using social media?",
+                        options: [
+                            "A) Sharing all personal information publicly.",
+                            "B) Respecting privacy and avoiding the spread of misinformation.",
+                            "C) Only following celebrities.",
+                            "D) Posting offensive content freely."
+                        ],
+                        correctAnswer: "B) Respecting privacy and avoiding the spread of misinformation.",
+                        explanation: "Ethical use of social media involves being mindful of privacy settings, avoiding the dissemination of false information, and engaging respectfully with others online."
+                    },
+                    {
+                        question: "What is the concept of 'Digital Footprint'?",
+                        options: [
+                            "A) The physical size of a computer.",
+                            "B) The trail of data you leave behind when you use the internet.",
+                            "C) The energy consumption of digital devices.",
+                            "D) The number of steps you take while using a fitness tracker."
+                        ],
+                        correctAnswer: "B) The trail of data you leave behind when you use the internet.",
+                        explanation: "A digital footprint is the unique and identifiable data that is left behind when you use the internet, including websites visited, emails sent, and information shared on social media."
+                    },
+                    {
+                        question: "What is the importance of regularly backing up your data?",
+                        options: [
+                            "A) It makes your computer run faster.",
+                            "B) It protects against data loss due to hardware failure, accidental deletion, or cyberattacks.",
+                            "C) It automatically installs software updates.",
+                            "D) It improves screen resolution."
+                        ],
+                        correctAnswer: "B) It protects against data loss due to hardware failure, accidental deletion, or cyberattacks.",
+                        explanation: "Regular data backups are crucial for disaster recovery, ensuring that you can restore your files in case of system crashes, hardware failures, malware attacks, or accidental deletions."
+                    },
+                    {
+                        question: "What is 'Spamming'?",
+                        options: [
+                            "A) Sending a single email to a friend.",
+                            "B) Sending unsolicited bulk messages, especially advertising, to a large number of recipients.",
+                            "C) Replying to an email.",
+                            "D) Organizing your email inbox."
+                        ],
+                        correctAnswer: "B) Sending unsolicited bulk messages, especially advertising, to a large number of recipients.",
+                        explanation: "Spamming refers to the act of sending unwanted or unsolicited messages, often commercial advertisements, to a large number of recipients, typically via email."
+                    },
+                    {
+                        question: "Which of the following is a common symptom of a computer virus infection?",
+                        options: [
+                            "A) Increased system performance.",
+                            "B) Unexpected pop-up windows or strange error messages.",
+                            "C) Faster internet connection.",
+                            "D) Cooler computer temperature."
+                        ],
+                        correctAnswer: "B) Unexpected pop-up windows or strange error messages.",
+                        explanation: "Computer viruses can manifest through various symptoms, including frequent pop-up ads, unusual error messages, slow system performance, and unexpected program behavior."
+                    },
+                    {
+                        question: "What is 'Intellectual Property' in the digital age?",
+                        options: [
+                            "A) Physical computer hardware.",
+                            "B) Creations of the mind, such as inventions, literary and artistic works, designs, and symbols, names, and images used in commerce.",
+                            "C) Public domain software.",
+                            "D) Open-source code."
+                        ],
+                        correctAnswer: "B) Creations of the mind, such as inventions, literary and artistic works, designs, and symbols, names, and images used in commerce.",
+                        explanation: "Intellectual property refers to creations of the mind. In the digital age, this includes software, digital art, music, videos, and written content, protected by laws like copyright and patents."
+                    },
+                    {
+                        question: "Ethical hacking, also known as 'White Hat Hacking', involves:",
+                        options: [
+                            "A) Illegally accessing computer systems for personal gain.",
+                            "B) Using hacking skills to identify vulnerabilities and improve security with permission.",
+                            "C) Spreading malware.",
+                            "D) Disrupting network services."
+                        ],
+                        correctAnswer: "B) Using hacking skills to identify vulnerabilities and improve security with permission.",
+                        explanation: "Ethical hacking (or white hat hacking) is the practice of using hacking techniques to identify security vulnerabilities in systems or networks with the permission of the owner, in order to improve security."
+                    }
+                ]
+            }
+        ];
+
+        // Global state variables
+        let currentChapterIndex = 0;
+        let currentQuestionIndex = 0;
+        let userAnswers = {}; // Stores selected answer for each question: {chapterIndex: {questionIndex: selectedOptionText}}
+        let chapterScores = {}; // Stores score for each chapter: {chapterIndex: score}
+
+        // DOM elements
+        const chapterNavContainer = document.querySelector('.chapter-nav');
+        const chapterTitleEl = document.getElementById('chapter-title');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const feedbackAreaEl = document.getElementById('feedback-area');
+        const scoreAreaEl = document.getElementById('score-area');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const resetChapterBtn = document.getElementById('reset-chapter-btn');
+        const explanationDisplayEl = document.getElementById('explanation-display');
+        const explanationLoadingEl = document.getElementById('explanation-loading'); // Kept for spinner styling, but functionality removed
+
+        /**
+         * Initializes the quiz by rendering chapter navigation and the first question.
+         */
+        function initializeQuiz() {
+            renderChapterNavigation();
+            loadChapter(0); // Load the first chapter by default
+        }
+
+        /**
+         * Renders the chapter navigation buttons.
+         */
+        function renderChapterNavigation() {
+            chapterNavContainer.innerHTML = '';
+            quizData.forEach((chapter, index) => {
+                const button = document.createElement('button');
+                button.textContent = chapter.chapter.split(': ')[0]; // Display "CHAPTER X"
+                button.classList.add(
+                    'px-4', 'py-2', 'rounded-lg', 'font-semibold', 'text-sm', 'md:text-base',
+                    'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500', 'focus:ring-opacity-75', 'shadow-sm'
+                );
+                button.dataset.chapterIndex = index;
+                button.addEventListener('click', () => loadChapter(index));
+                chapterNavContainer.appendChild(button);
+            });
+        }
+
+        /**
+         * Loads a specific chapter and resets the question index for that chapter.
+         * @param {number} chapterIndex - The index of the chapter to load.
+         */
+        function loadChapter(chapterIndex) {
+            currentChapterIndex = chapterIndex;
+            currentQuestionIndex = 0; // Always start from the first question when changing chapters
+            userAnswers[currentChapterIndex] = userAnswers[currentChapterIndex] || {}; // Initialize answers for this chapter
+            chapterScores[currentChapterIndex] = chapterScores[currentChapterIndex] || 0; // Initialize score for this chapter
+            updateChapterNavActiveState();
+            renderQuestion();
+        }
+
+        /**
+         * Updates the active state of chapter navigation buttons.
+         */
+        function updateChapterNavActiveState() {
+            const chapterButtons = chapterNavContainer.querySelectorAll('button');
+            chapterButtons.forEach((button, index) => {
+                if (index === currentChapterIndex) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+
+        /**
+         * Renders the current question and its options.
+         */
+        function renderQuestion() {
+            const chapter = quizData[currentChapterIndex];
+            const question = chapter.questions[currentQuestionIndex];
+
+            if (!question) {
+                // This case should ideally not happen if navigation logic is correct
+                questionTextEl.textContent = "No more questions in this chapter.";
+                optionsContainerEl.innerHTML = '';
+                feedbackAreaEl.textContent = '';
+                scoreAreaEl.textContent = '';
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+                explanationDisplayEl.classList.add('hidden'); // Hide explanation
+                return;
+            }
+
+            chapterTitleEl.textContent = chapter.chapter;
+            questionTextEl.textContent = `${currentQuestionIndex + 1}. ${question.question}`;
+            optionsContainerEl.innerHTML = ''; // Clear previous options
+            feedbackAreaEl.textContent = ''; // Clear previous feedback
+            explanationDisplayEl.classList.add('hidden'); // Hide explanation
+            explanationDisplayEl.textContent = ''; // Clear explanation text
+
+            question.options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.classList.add(
+                    'option-button', 'w-full', 'text-left', 'px-4', 'py-3', 'rounded-lg',
+                    'border-2',
+                    'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500', 'focus:ring-opacity-75'
+                );
+                button.dataset.option = option;
+                button.addEventListener('click', handleOptionClick);
+                optionsContainerEl.appendChild(button);
+            });
+
+            // Restore previous selection and disable options if already answered
+            const previouslyAnswered = userAnswers[currentChapterIndex][currentQuestionIndex];
+            if (previouslyAnswered) {
+                disableOptions();
+                highlightAnswer(previouslyAnswered, question.correctAnswer);
+                // If previously answered, and it was correct, show explanation
+                if (previouslyAnswered === question.correctAnswer && question.explanation) {
+                    explanationDisplayEl.textContent = question.explanation;
+                    explanationDisplayEl.classList.remove('hidden');
+                }
+            } else {
+                // If not answered, ensure next button is disabled
+                nextBtn.disabled = true;
+            }
+
+            updateNavigationButtons();
+            updateScoreDisplay();
+        }
+
+        /**
+         * Handles the click event on an option button.
+         * @param {Event} event - The click event.
+         */
+        async function handleOptionClick(event) {
+            const selectedOption = event.target.dataset.option;
+            const currentQuestion = quizData[currentChapterIndex].questions[currentQuestionIndex];
+            const correctAnswer = currentQuestion.correctAnswer;
+
+            // Store the user's answer
+            userAnswers[currentChapterIndex][currentQuestionIndex] = selectedOption;
+
+            // Disable all options after a selection is made
+            disableOptions();
+
+            // Provide feedback and update score
+            highlightAnswer(selectedOption, correctAnswer);
+            updateScore();
+            updateScoreDisplay();
+
+            // Enable next button after an answer is given
+            nextBtn.disabled = false;
+
+            // If the answer is correct and an explanation exists, display it
+            if (selectedOption === correctAnswer && currentQuestion.explanation) {
+                explanationDisplayEl.textContent = currentQuestion.explanation;
+                explanationDisplayEl.classList.remove('hidden');
+            } else {
+                explanationDisplayEl.classList.add('hidden'); // Hide explanation if answer is incorrect or no explanation exists
+            }
+        }
+
+        /**
+         * Disables all option buttons.
+         */
+        function disableOptions() {
+            const optionButtons = optionsContainerEl.querySelectorAll('.option-button');
+            optionButtons.forEach(button => {
+                button.disabled = true;
+            });
+        }
+
+        /**
+         * Highlights the selected answer and the correct answer.
+         * @param {string} selectedOption - The option selected by the user.
+         * @param {string} correctAnswer - The correct answer for the current question.
+         */
+        function highlightAnswer(selectedOption, correctAnswer) {
+            const optionButtons = optionsContainerEl.querySelectorAll('.option-button');
+            optionButtons.forEach(button => {
+                if (button.dataset.option === selectedOption) {
+                    if (selectedOption === correctAnswer) {
+                        button.classList.add('correct');
+                        feedbackAreaEl.textContent = "Correct!";
+                        feedbackAreaEl.classList.remove('text-red-700');
+                        feedbackAreaEl.classList.add('text-green-700');
+                    } else {
+                        button.classList.add('incorrect');
+                        feedbackAreaEl.textContent = "Incorrect. The correct answer was:";
+                        feedbackAreaEl.classList.remove('text-green-700');
+                        feedbackAreaEl.classList.add('text-red-700');
+                    }
+                }
+                // Always highlight the correct answer if an incorrect answer was chosen
+                if (button.dataset.option === correctAnswer && selectedOption !== correctAnswer) {
+                     button.classList.add('correct');
+                }
+            });
+        }
+
+        /**
+         * Updates the score for the current chapter.
+         */
+        function updateScore() {
+            let newScore = 0;
+            const chapterQuestions = quizData[currentChapterIndex].questions;
+            for (let i = 0; i < chapterQuestions.length; i++) {
+                const q = chapterQuestions[i];
+                const ans = userAnswers[currentChapterIndex][i];
+                if (ans && ans === q.correctAnswer) {
+                    newScore++;
+                }
+            }
+            chapterScores[currentChapterIndex] = newScore;
+        }
+
+        /**
+         * Displays the current score for the chapter.
+         */
+        function updateScoreDisplay() {
+            const totalQuestions = quizData[currentChapterIndex].questions.length;
+            const currentScore = chapterScores[currentChapterIndex] || 0;
+            scoreAreaEl.textContent = `Score: ${currentScore} / ${totalQuestions}`;
+        }
+
+        /**
+         * Updates the enabled/disabled state of the Previous and Next buttons.
+         */
+        function updateNavigationButtons() {
+            prevBtn.disabled = currentQuestionIndex === 0;
+            // Next button is disabled if the current question hasn't been answered yet
+            const isCurrentQuestionAnswered = userAnswers[currentChapterIndex] && userAnswers[currentChapterIndex][currentQuestionIndex] !== undefined;
+            nextBtn.disabled = !isCurrentQuestionAnswered || currentQuestionIndex === quizData[currentChapterIndex].questions.length - 1;
+        }
+
+        /**
+         * Navigates to the next question.
+         */
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        });
+
+        /**
+         * Navigates to the previous question.
+         */
+        nextBtn.addEventListener('click', () => {
+            // Ensure the current question is answered before moving next
+            const isCurrentQuestionAnswered = userAnswers[currentChapterIndex] && userAnswers[currentChapterIndex][currentQuestionIndex] !== undefined;
+            if (currentQuestionIndex < quizData[currentChapterIndex].questions.length - 1 && isCurrentQuestionAnswered) {
+                currentQuestionIndex++;
+                renderQuestion();
+            }
+        });
+
+        /**
+         * Resets the quiz for the current chapter.
+         */
+        resetChapterBtn.addEventListener('click', () => {
+            userAnswers[currentChapterIndex] = {}; // Clear answers for current chapter
+            chapterScores[currentChapterIndex] = 0; // Reset score for current chapter
+            currentQuestionIndex = 0; // Go back to the first question
+            renderQuestion(); // Re-render the first question
+        });
+
+        // Initialize the quiz when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', initializeQuiz);
+    </script>
+</body>
+</html>
